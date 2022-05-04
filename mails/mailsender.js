@@ -64,11 +64,11 @@ connection.query(`SELECT * FROM ` + config.db_tables.mails.table + ` WHERE sent 
         switch (mail_type) {
             case 1:
                 mail_subject = mail_config[1].subject;
-                mail_template_path = mail_config[1].mail;
+                mail_template_path = "./mails" + mail_config[1].mail;
                 break;
             case 2:
                 mail_subject = mail_config[2].subject;
-                mail_template_path = mail_config[2].mail;
+                mail_template_path = "./mails" + mail_config[2].mail;
                 break;
         }
 
