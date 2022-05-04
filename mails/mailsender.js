@@ -11,6 +11,7 @@ const fs = require('fs');
 const config = require('../config.json');
 const mail_config = require('./mails.json');
 var mail_array;
+const current_timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
 // 
 // Main
@@ -36,9 +37,14 @@ var mail_transporter = nodemailer.createTransport({
     }
 });
 
+// Update the mail in the database
+connection.query(`UPDATE ` + config.db_tables.mails.table + ` SET sent = "` + current_timestamp + `" WHERE sent IS NULL`, function(err, rows, fields) {
+    console.log("Database updated: " + rows.affectedRows + " rows affected");
+    console.log("Sending mails...");
+});
 
 // Get all mails from the database that are not sent yet
-connection.query(`SELECT * FROM ` + config.db_tables.mails.table + ` WHERE sent = 0 AND mail_type = 1`, function(err, rows, fields) {
+connection.query(`SELECT * FROM ` + config.db_tables.mails.table + ` WHERE sent = "` + current_timestamp + `"`, function(err, rows, fields) {
 
     // Loop through the rows
     for (var i = 0; i < rows.length; i++) {
@@ -84,6 +90,5 @@ connection.query(`SELECT * FROM ` + config.db_tables.mails.table + ` WHERE sent 
                 console.log('Email sent: ' + info.response);
             }
         });
-
     }
 });
