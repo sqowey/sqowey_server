@@ -10,8 +10,14 @@ const fs = require('fs');
 // 
 const config = require('../config.json');
 const mail_config = require('./mails.json');
-var mail_array;
 const current_timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+var mail_type;
+var reciever;
+var details;
+var mail_template;
+var mail_subject;
+var mail_template_path;
+var mail_body
 
 // 
 // Main
@@ -50,30 +56,29 @@ connection.query(`SELECT * FROM ` + config.db_tables.mails.table + ` WHERE sent 
     for (var i = 0; i < rows.length; i++) {
 
         // Get the values
-        var mail_type = rows[i].mail_type;
-        var reciever = rows[i].reciever;
-        var mail_id = rows[i].mail_id;
-        var details = rows[i].details;
+        reciever = rows[i].reciever;
+        mail_type = rows[i].mail_type;
+        details = rows[i].details;
 
         // Get the mail subject from the mail_config
         switch (mail_type) {
             case 1:
-                var mail_subject = mail_config[1].subject;
-                var mail_template_path = mail_config[1].mail;
+                mail_subject = mail_config[1].subject;
+                mail_template_path = mail_config[1].mail;
                 break;
             case 2:
-                var mail_subject = mail_config[2].subject;
-                var mail_template_path = mail_config[2].mail;
+                mail_subject = mail_config[2].subject;
+                mail_template_path = mail_config[2].mail;
                 break;
         }
 
         // Get the mail template
-        var mail_template = fs.readFileSync(mail_template_path, 'utf8');
+        mail_template = fs.readFileSync(mail_template_path, 'utf8');
 
         // Replace the placeholders in the mail template
         switch (mail_type) {
             case 1:
-                var mail_body = mail_template.replace("?USERNAME?", reciever).replace("?VERIFICATIONCODE?", details);
+                mail_body = mail_template.replace("?USERNAME?", reciever).replace("?VERIFICATIONCODE?", details);
                 break;
         }
 
