@@ -1,10 +1,10 @@
 {
-    "acc_deletion": {
-        "mail": "./templates/acc_deletion.html",
-        "subject": "Sqowey - Account Deletion request"
-    },
-    "acc_verification": {
+    "1": {
         "mail": "./templates/acc_verification.html",
         "subject": "Sqowey - Account Verification"
+    },
+    "2": {
+        "mail": "./templates/acc_deletion.html",
+        "subject": "Sqowey - Account Deletion request"
     }
 }
