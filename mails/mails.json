@@ -1,0 +1,7 @@
+{
+    "accountdeletion": {
+        "mail": "./templates/accountdeletion.html",
+        "subject": "Sqowey - Account Deletion request",
+        "subject_de": "Sqowey - Account Deletion request"
+    }
+}
