@@ -17,7 +17,7 @@ var details;
 var mail_template;
 var mail_subject;
 var mail_template_path;
-var mail_body
+var mail_body;
 
 // 
 // Main
