@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "mysql": "^2.18.1",
     "nodemailer": "^6.7.5"
   }
 }
