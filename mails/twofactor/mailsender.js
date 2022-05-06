@@ -13,15 +13,12 @@ const fs = require('fs');
 // 
 // Variables
 // 
-const config = require('../config.json');
-const mail_config = require('./mails.json');
+const config = require('../../config.json');
 const current_timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-var mail_type;
+var username;
 var reciever;
-var details;
+var code;
 var mail_template;
-var mail_subject;
-var mail_template_path;
 var mail_body;
 
 // 
@@ -62,36 +59,20 @@ connection.query(`SELECT * FROM ` + config.db_tables.twofactor_mails.table + ` W
 
         // Get the values
         reciever = rows[i].reciever;
-        mail_type = rows[i].mail_type;
-        details = rows[i].details;
-
-        // Get the mail subject from the mail_config
-        switch (mail_type) {
-            case 1:
-                mail_subject = mail_config[1].subject;
-                mail_template_path = "./mails" + mail_config[1].mail;
-                break;
-            case 2:
-                mail_subject = mail_config[2].subject;
-                mail_template_path = "./mails" + mail_config[2].mail;
-                break;
-        }
+        username = rows[i].username;
+        code = rows[i].code;
 
         // Get the mail template
-        mail_template = fs.readFileSync(mail_template_path, 'utf8');
+        mail_template = fs.readFileSync("./mails/twofactor/template.html", 'utf8');
 
         // Replace the placeholders in the mail template
-        switch (mail_type) {
-            case 1:
-                mail_body = mail_template.replace("?USERNAME?", reciever).replace("?VERIFICATIONCODE?", details);
-                break;
-        }
+        mail_body = mail_template.replace("?USERNAME?", username).replace("?VERIFICATIONCODE?", code);
 
         // Send the mail
         mail_transporter.sendMail({
             from: config.mail.auth.user,
             to: reciever,
-            subject: mail_subject,
+            subject: "Sqowey 2FA",
             html: mail_body
         }, function(error, info) {
             if (error) {
@@ -100,5 +81,12 @@ connection.query(`SELECT * FROM ` + config.db_tables.twofactor_mails.table + ` W
                 console.log('Email sent: ' + info.response);
             }
         });
+
+        // Check if last iteration
+        if (i == rows.length - 1) {
+
+            // End connection to the database and close the transporter
+            connection.end();
+        }
     }
 });
