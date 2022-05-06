@@ -23,8 +23,11 @@ setInterval(function() {
     if (timer <= 0) {
         timer = 10;
 
+        console.log();
+
         // Run the function to run the other script files
         run_10s_scripts();
+
     } else {
         console.log("Waiting [" + timer + "/10]");
     }
@@ -34,13 +37,17 @@ setInterval(function() {
 // Function that runs all stuff that needs to be done every 10 seconds
 function run_10s_scripts() {
 
-    console.log("RUNNING");
-
     // Run ./mails/mailsender.js
-    console.log("RUNNING MAILSENDER");
-    exec('node ./mails/mailsender.js', function(error, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        console.log(error);
+    console.log("2FA-Mailer running");
+    exec('node ./mails/twofactor/mailsender.js', function(error, stdout, stderr) {
+        if (error) {
+            console.log(error);
+        }
+        if (stdout) {
+            console.log(stdout);
+        }
+        if (stderr) {
+            console.log(stderr);
+        }
     });
 }
