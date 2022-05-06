@@ -18,7 +18,7 @@
             "port": 3306,
             "user": "root",
             "pass": "",
-            "db": "sqowey_mails"
+            "db": "sqowey_mails",
             "table": "twofactor"
         }
     }
