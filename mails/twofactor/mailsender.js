@@ -30,10 +30,10 @@ var mail_body;
 
 // Create a connection to the database
 var connection = mysql.createConnection({
-    host: config.db_tables.mails.host,
-    user: config.db_tables.mails.user,
-    password: config.db_tables.mails.pass,
-    database: config.db_tables.mails.db
+    host: config.db_tables.twofactor_mails.host,
+    user: config.db_tables.twofactor_mails.user,
+    password: config.db_tables.twofactor_mails.pass,
+    database: config.db_tables.twofactor_mails.db
 });
 connection.connect();
 
@@ -49,13 +49,13 @@ var mail_transporter = nodemailer.createTransport({
 });
 
 // Update the mail in the database
-connection.query(`UPDATE ` + config.db_tables.mails.table + ` SET sent = "` + current_timestamp + `" WHERE sent IS NULL`, function(err, rows, fields) {
+connection.query(`UPDATE ` + config.db_tables.twofactor_mails.table + ` SET sent = "` + current_timestamp + `" WHERE sent IS NULL`, function(err, rows, fields) {
     console.log("Database updated: " + rows.affectedRows + " rows affected");
     console.log("Sending mails...");
 });
 
 // Get all mails from the database that are not sent yet
-connection.query(`SELECT * FROM ` + config.db_tables.mails.table + ` WHERE sent = "` + current_timestamp + `"`, function(err, rows, fields) {
+connection.query(`SELECT * FROM ` + config.db_tables.twofactor_mails.table + ` WHERE sent = "` + current_timestamp + `"`, function(err, rows, fields) {
 
     // Loop through the rows
     for (var i = 0; i < rows.length; i++) {
