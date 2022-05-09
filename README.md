@@ -3,7 +3,7 @@
 ## Configuration example
 ```
 {
-    "mail":{
+    "mail": {
         "host": "smtp.gmail.com",
         "port": 465,
         "secure": true,
@@ -12,7 +12,7 @@
             "pass": "PASSWORD"
         }
     },
-    "db_tables":{
+    "db_tables": {
         "twofactor_mails": {
             "host": "localhost",
             "port": 3306,
@@ -20,6 +20,22 @@
             "pass": "",
             "db": "sqowey_mails",
             "table": "twofactor"
+        },
+        "acc_del_mails": {
+            "host": "localhost",
+            "port": 3306,
+            "user": "root",
+            "pass": "",
+            "db": "sqowey_mails",
+            "table": "accountdeletion"
+        },
+        "tmp_accountdeletion": {
+            "host": "localhost",
+            "port": 3306,
+            "user": "root",
+            "pass": "",
+            "db": "sqowey_tmp",
+            "table": "accountdeletion"
         }
     }
 }
