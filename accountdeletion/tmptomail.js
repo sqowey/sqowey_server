@@ -117,7 +117,13 @@ tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.d
                 if (err) throw err;
             });
         }
-            }
+
+        // Check if last iteration
+        if (i == result.length - 1) {
+
+            // Close the connections
+            tmp_connection.end();
+            mail_connection.end();
         }
     }
 });
