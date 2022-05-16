@@ -42,7 +42,7 @@ mail_connection.connect();
 
 
 // Get the id and timestamp from the database
-tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.db_tables.tmp_accountdeletion.table, function(err, result) {
+tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.db_tables.tmp_accountdeletion.table + " WHERE mails_created = 0;", function(err, result) {
 
     // If error
     if (err) throw err;
@@ -117,6 +117,13 @@ tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.d
                 if (err) throw err;
             });
         }
+
+        // Set mails_created to true in tmp_accountdeletion.table table
+        sql = "UPDATE " + config.db_tables.tmp_accountdeletion.table + " SET mails_created = 1 WHERE user_id = " + user_id + ";";
+        tmp_connection.query(sql, function(err, result) {
+            // If error
+            if (err) throw err;
+        });
 
         // Check if last iteration
         if (i == result.length - 1) {
