@@ -56,14 +56,14 @@ tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.d
         var delete_timestamp_mysql = delete_timestamp.getFullYear() + '-' + (delete_timestamp.getMonth() + 1) + '-' + delete_timestamp.getDate() + ' ' + delete_timestamp.getHours() + ':' + delete_timestamp.getMinutes() + ':' + delete_timestamp.getSeconds();
 
         // Create a new mail
-        sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + current_date_mysql + "\",\"" + delete_timestamp_mysql + "\", 1);";
+        sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, user_email, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + email + "\",\"" + current_date_mysql + "\",\"" + delete_timestamp_mysql + "\", 1);";
         mail_connection.query(sql, function(err, result) {
             // If error
             if (err) throw err;
         });
 
         // Create a new mail
-        sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + delete_timestamp_mysql + "\",\"" + delete_timestamp_mysql + "\", 3);";
+        sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, user_email, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + email + "\",\"" + delete_timestamp_mysql + "\",\"" + delete_timestamp_mysql + "\", 3);";
         mail_connection.query(sql, function(err, result) {
             // If error
             if (err) throw err;
@@ -77,7 +77,7 @@ tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.d
             var delete_timestamp_mysql_minus_one_week = new Date(delete_timestamp_mysql_minus_one_week).getFullYear() + '-' + (new Date(delete_timestamp_mysql_minus_one_week).getMonth() + 1) + '-' + new Date(delete_timestamp_mysql_minus_one_week).getDate() + ' ' + new Date(delete_timestamp_mysql_minus_one_week).getHours() + ':' + new Date(delete_timestamp_mysql_minus_one_week).getMinutes() + ':' + new Date(delete_timestamp_mysql_minus_one_week).getSeconds();
 
             // Create a new mail
-            sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + delete_timestamp_mysql_minus_one_week + "\",\"" + delete_timestamp_mysql + "\", 2);";
+            sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, user_email, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + email + "\",\"" + delete_timestamp_mysql_minus_one_week + "\",\"" + delete_timestamp_mysql + "\", 2);";
             mail_connection.query(sql, function(err, result) {
                 // If error
                 if (err) throw err;
@@ -91,7 +91,7 @@ tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.d
             var delete_timestamp_mysql_minus_one_month = new Date(delete_timestamp_mysql_minus_one_month).getFullYear() + '-' + (new Date(delete_timestamp_mysql_minus_one_month).getMonth() + 1) + '-' + new Date(delete_timestamp_mysql_minus_one_month).getDate() + ' ' + new Date(delete_timestamp_mysql_minus_one_month).getHours() + ':' + new Date(delete_timestamp_mysql_minus_one_month).getMinutes() + ':' + new Date(delete_timestamp_mysql_minus_one_month).getSeconds();
 
             // Create a new mail
-            sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + delete_timestamp_mysql_minus_one_month + "\",\"" + delete_timestamp_mysql + "\", 2);";
+            sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, user_email, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + email + "\",\"" + delete_timestamp_mysql_minus_one_month + "\",\"" + delete_timestamp_mysql + "\", 2);";
             mail_connection.query(sql, function(err, result) {
                 // If error
                 if (err) throw err;
@@ -106,7 +106,7 @@ tmp_connection.query(`SELECT user_id, user_email, delete_until FROM ` + config.d
             var delete_timestamp_mysql_minus_six_months = new Date(delete_timestamp_mysql_minus_six_months).getFullYear() + '-' + (new Date(delete_timestamp_mysql_minus_six_months).getMonth() + 1) + '-' + new Date(delete_timestamp_mysql_minus_six_months).getDate() + ' ' + new Date(delete_timestamp_mysql_minus_six_months).getHours() + ':' + new Date(delete_timestamp_mysql_minus_six_months).getMinutes() + ':' + new Date(delete_timestamp_mysql_minus_six_months).getSeconds();
 
             // Create a new mail
-            sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + delete_timestamp_mysql_minus_six_months + "\",\"" + delete_timestamp_mysql + "\", 2);";
+            sql = "INSERT INTO " + config.db_tables.acc_del_mails.table + " (user_id, user_email, send_timestamp, deletion_timestamp, type) VALUES (" + user_id + ",\"" + email + "\",\"" + delete_timestamp_mysql_minus_six_months + "\",\"" + delete_timestamp_mysql + "\", 2);";
             mail_connection.query(sql, function(err, result) {
                 // If error
                 if (err) throw err;
