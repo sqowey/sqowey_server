@@ -7,18 +7,11 @@
 // Modules
 // 
 const mysql = require('mysql');
-const nodemailer = require('nodemailer');
-const fs = require('fs');
 
 // 
 // Variables
 // 
 const config = require('../config.json');
-const { time } = require('console');
-var username;
-var timestamp;
-var email;
-var sql;
 
 // 
 // Main
