@@ -13,7 +13,7 @@ var timer = 0;
 // Main
 //
 
-// Loop every secong
+// Loop every 10 seconds
 setInterval(function() {
 
     // Decrease the timer
