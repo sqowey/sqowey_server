@@ -21,7 +21,7 @@ setInterval(function() {
         }
     });
 
-}, 10000);
+}, 1000 * 10);
 
 // Loop every 1 minute
 setInterval(function() {
@@ -56,4 +56,4 @@ setInterval(function() {
             console.log(stderr);
         }
     });
-}, 60000);
+}, 1000 * 60);
