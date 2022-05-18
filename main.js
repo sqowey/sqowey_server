@@ -10,7 +10,7 @@ const exec = require('child_process').exec;
 // Loop every 10 seconds
 setInterval(function() {
 
-    // Run ./mails/mailsender.js
+    // Run ./mails/twofactor/mailsender.js
     console.log("2FA-Mailer running");
     exec('node ./mails/twofactor/mailsender.js', function(error, stdout, stderr) {
         if (error) {
