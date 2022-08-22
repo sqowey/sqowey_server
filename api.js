@@ -1,7 +1,10 @@
 // Get the express module
 const express = require("express");
-const api_log = require("./api_log.js");
+// Get the mysql module
 const mysql = require("mysql");
+// Get the api_log module
+const api_log = require("./api_log.js");
+// Get the configuration file
 const config = require("./config.json");
 
 // Create a connection variable
