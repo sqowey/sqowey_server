@@ -58,6 +58,12 @@ API.get("/auth/", (req, res) => {
         for (let i = 1; i < 48; i++) {
             auth_token += config.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.endpointSettings.auth.tokenChars.length));
         }
+        // Insert the auth token
+        mysql_con.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + parsedbody.app_id + "', '" + auth_token + "')");
+        // Respond with auth token
+        res.status(201);
+        res.json({ "app_id": parsedbody.app_id, "auth_token": auth_token });
+        api_log.writeLog("GET", "/AUTH/", 201, { "app_id": parsedbody.app_id, "auth_token": auth_token });
     });
 });
 
