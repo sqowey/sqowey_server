@@ -1,22 +1,22 @@
 {
-  "name": "sqowey_server",
-  "version": "1.0.0",
-  "description": "API-Server for the Messenger Sqowey",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sqowey/sqowey_server.git"
-  },
-  "author": "CuzImBisonratte",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sqowey/sqowey_server/issues"
-  },
-  "homepage": "https://github.com/sqowey/sqowey_server#readme",
-  "dependencies": {
-    "express": "^4.18.1"
-  }
+    "name": "sqowey_server",
+    "version": "1.0.0",
+    "description": "API-Server for the Messenger Sqowey",
+    "main": "api.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sqowey/sqowey_server.git"
+    },
+    "author": "CuzImBisonratte",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/sqowey/sqowey_server/issues"
+    },
+    "homepage": "https://github.com/sqowey/sqowey_server#readme",
+    "dependencies": {
+        "express": "^4.18.1"
+    }
 }
