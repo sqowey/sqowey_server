@@ -1,10 +1,12 @@
 {
     "apiPort": 3333,
-    "mysql_connection": {
-        "host": "localhost",
-        "user": "root",
-        "password": "",
-        "database": "sqowey_devportal"
+    "mysql_connections": {
+        "application": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "database": "sqowey_devportal"
+        }
     },
     "endpointSettings": {
         "auth": {

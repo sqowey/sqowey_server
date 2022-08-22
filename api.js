@@ -8,7 +8,7 @@ const api_log = require("./api_log.js");
 const config = require("./config.json");
 
 // Create a connection variable
-var mysql_con = mysql.createConnection(config.mysql_connection);
+var devportal_db_connection = mysql.createConnection(config.mysql_connections.application);
 
 // Initialize the api log
 api_log.initLogFile();
@@ -37,7 +37,7 @@ API.get("/auth/", (req, res) => {
         return;
     }
     // Check if the app id matches the app secret
-    mysql_con.query("SELECT app_secret FROM apps WHERE app_id = \"" + parsedbody.app_id + "\"", function(error, results, fields) {
+    devportal_db_connection.query("SELECT app_secret FROM apps WHERE app_id = \"" + parsedbody.app_id + "\"", function(error, results, fields) {
         if (error) throw error;
         // Check if app can be found by id
         if (results == false) {
@@ -54,14 +54,14 @@ API.get("/auth/", (req, res) => {
             return;
         }
         // Delete old auth token entry
-        mysql_con.query("DELETE FROM authentification WHERE app_id = '" + parsedbody.app_id + "'");
+        devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + parsedbody.app_id + "'");
         // Create new auth token
         var auth_token = "";
         for (let i = 1; i < 48; i++) {
             auth_token += config.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.endpointSettings.auth.tokenChars.length));
         }
         // Insert the auth token
-        mysql_con.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + parsedbody.app_id + "', '" + auth_token + "')");
+        devportal_db_connection.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + parsedbody.app_id + "', '" + auth_token + "')");
         // Respond with auth token
         res.status(201);
         res.json({ "app_id": parsedbody.app_id, "auth_token": auth_token });
@@ -74,11 +74,11 @@ API.listen(config.apiPort, () => {
     // Log
     console.log("Express server running on Port:" + config.apiPort);
     // Connect to 
-    mysql_con.connect(function(err) {
+    devportal_db_connection.connect(function(err) {
         if (err) {
             console.error('Error connecting to mysql: ' + err.stack);
             return;
         }
-        console.log('Mysql connection running as: ' + mysql_con.threadId);
+        console.log('Mysql connection running as: ' + devportal_db_connection.threadId);
     });
 });
