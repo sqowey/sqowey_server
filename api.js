@@ -8,7 +8,7 @@ const api_log = require("./api_log.js");
 const config = require("./config.json");
 
 // Create a connection variable
-var con = mysql.createConnection(config.mysql_connection);
+var mysql_con = mysql.createConnection(config.mysql_connection);
 
 // Initialize the api log
 api_log.initLogFile();
@@ -36,11 +36,29 @@ API.get("/auth/", (req, res) => {
         api_log.writeLog("GET", "/AUTH/", 400, { "app_id": parsedbody.app_id });
         return;
     }
-    // Create new auth token
-    var auth_token = "";
-    for (let i = 1; i < 48; i++) {
-        auth_token += config.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.endpointSettings.auth.tokenChars.length));
-    }
+    // Check if the app id matches the app secret
+    mysql_con.query("SELECT app_secret FROM apps WHERE app_id = \"" + parsedbody.app_id + "\"", function(error, results, fields) {
+        if (error) throw error;
+        // Check if app can be found by id
+        if (results == false) {
+            res.status(401);
+            res.json({ "error": "Unknown app ID", "hint": "The used app id is unknown! Please check the devportal!" });
+            api_log.writeLog("GET", "/AUTH/", 401, { "app_id": parsedbody.app_id });
+            return;
+        }
+        // Check if id matches secret
+        if (results[0].app_secret != parsedbody.app_secret) {
+            res.status(403);
+            res.json({ "error": "Wrong App secret", "hint": "The used app secret is wrong! Please check the devportal!" });
+            api_log.writeLog("GET", "/AUTH/", 403, { "app_id": parsedbody.app_id });
+            return;
+        }
+        // Create new auth token
+        var auth_token = "";
+        for (let i = 1; i < 48; i++) {
+            auth_token += config.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.endpointSettings.auth.tokenChars.length));
+        }
+    });
 });
 
 // Run the express server
@@ -48,11 +66,11 @@ API.listen(config.apiPort, () => {
     // Log
     console.log("Express server running on Port:" + config.apiPort);
     // Connect to 
-    con.connect(function(err) {
+    mysql_con.connect(function(err) {
         if (err) {
             console.error('Error connecting to mysql: ' + err.stack);
             return;
         }
-        console.log('Mysql connection running as: ' + con.threadId);
+        console.log('Mysql connection running as: ' + mysql_con.threadId);
     });
 });
