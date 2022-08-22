@@ -1,3 +1,6 @@
+// Setup variables
+const port = 3333;
+
 // Get the express module
 const express = require("express");
 
@@ -11,3 +14,9 @@ API.use(
     })
 );
 API.use(express.json());
+
+
+// Run the express server
+API.listen(port, () => {
+    console.log("Listening on Port: " + port);
+});
