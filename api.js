@@ -1,19 +1,11 @@
-// Setup variables
-const port = 3333;
-const authTokenChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
 // Get the express module
 const express = require("express");
-const api_log = require("./api_log.js")
+const api_log = require("./api_log.js");
 const mysql = require("mysql");
+const config = require("./config.json");
 
 // Create a connection variable
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "sqowey_devportal"
-});
+var con = mysql.createConnection(config.mysql_connection);
 
 // Initialize the api log
 api_log.initLogFile();
@@ -44,14 +36,14 @@ API.get("/auth/", (req, res) => {
     // Create new auth token
     var auth_token = "";
     for (let i = 1; i < 48; i++) {
-        auth_token += authTokenChars.charAt(Math.floor(Math.random() * authTokenChars.length));
+        auth_token += config.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.endpointSettings.auth.tokenChars.length));
     }
 });
 
 // Run the express server
-API.listen(port, () => {
+API.listen(config.apiPort, () => {
     // Log
-    console.log("Express server running on Port:" + port);
+    console.log("Express server running on Port:" + config.apiPort);
     // Connect to 
     con.connect(function(err) {
         if (err) {
