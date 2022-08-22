@@ -3,6 +3,10 @@ const port = 3333;
 
 // Get the express module
 const express = require("express");
+const api_log = require("./api_log.js")
+
+// Initialize the api log
+api_log.initLogFile();
 
 // Create the express Instance
 const API = express();
@@ -24,6 +28,7 @@ API.get("/auth/", (req, res) => {
     if (!parsedbody.app_id || !parsedbody.app_secret) {
         res.status(400);
         res.json({ "error": "Bad request", "hint": "Your request is missing something! Please look into the Documentation" });
+        api_log.writeLog("GET", "/AUTH/", 400, { "app_id": parsedbody.app_id });
         return;
     }
 });
