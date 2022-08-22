@@ -1,5 +1,6 @@
 // Setup variables
 const port = 3333;
+const authTokenChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 // Get the express module
 const express = require("express");
@@ -30,6 +31,11 @@ API.get("/auth/", (req, res) => {
         res.json({ "error": "Bad request", "hint": "Your request is missing something! Please look into the Documentation" });
         api_log.writeLog("GET", "/AUTH/", 400, { "app_id": parsedbody.app_id });
         return;
+    }
+    // Create new auth token
+    var auth_token = "";
+    for (let i = 1; i < 48; i++) {
+        auth_token += authTokenChars.charAt(Math.floor(Math.random() * authTokenChars.length));
     }
 });
 
