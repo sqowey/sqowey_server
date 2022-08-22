@@ -53,6 +53,8 @@ API.get("/auth/", (req, res) => {
             api_log.writeLog("GET", "/AUTH/", 403, { "app_id": parsedbody.app_id });
             return;
         }
+        // Delete old auth token entry
+        mysql_con.query("DELETE FROM authentification WHERE app_id = '" + parsedbody.app_id + "'");
         // Create new auth token
         var auth_token = "";
         for (let i = 1; i < 48; i++) {
