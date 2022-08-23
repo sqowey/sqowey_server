@@ -25,7 +25,7 @@ API.use(
 API.use(express.json());
 
 // Auth endpoint
-API.get("/auth/", (req, res) => {
+API.post("/auth/", (req, res) => {
     // Get the body
     const requestbody = req.body;
     // Check if body is right
