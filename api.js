@@ -24,6 +24,13 @@ API.use(
 );
 API.use(express.json());
 
+// Function to reduce tokens
+function reduceTokens(tokens, app_id) {
+    devportal_db_connection.query("UPDATE apps SET tokens = tokens - " + tokens + " WHERE app_id = '" + app_id + "'", function(error, results, fields) {
+        if (error) throw error;
+    });
+}
+
 // Auth endpoint
 API.post("/auth/", (req, res) => {
     // Get the body
@@ -52,6 +59,8 @@ API.post("/auth/", (req, res) => {
             api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id });
             return;
         }
+        // Reduce by 100 tokens
+        reduceTokens(100, requestbody.app_id);
         // Delete old auth token entry
         devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
         // Create new auth token
