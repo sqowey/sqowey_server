@@ -12,5 +12,37 @@
         "auth": {
             "tokenChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         }
+    },
+    "endpoint_cost": {
+        "auth": {
+            "post": 100
+        },
+        "users": {
+            "get": 2,
+            "patch": 5
+        },
+        "statistics": {
+            "get": 2
+        },
+        "servers": {
+            "get": 5,
+            "patch": 10
+        },
+        "client": {
+            "get": 10,
+            "post": 10,
+            "patch": 5,
+            "delete": 1000
+        },
+        "messages": {
+            "get": 2,
+            "post": 3,
+            "patch": 5,
+            "delete": 5
+        },
+        "applications": {
+            "get": 25,
+            "patch": 50
+        }
     }
 }

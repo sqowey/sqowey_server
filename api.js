@@ -59,8 +59,8 @@ API.post("/auth/", (req, res) => {
             api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id });
             return;
         }
-        // Reduce by 100 tokens
-        reduceTokens(100, requestbody.app_id);
+        // Reduce tokens
+        reduceTokens(config.endpoint_cost.auth.post, requestbody.app_id);
         // Delete old auth token entry
         devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
         // Create new auth token
