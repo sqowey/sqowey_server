@@ -38,7 +38,7 @@ API.post("/auth/", (req, res) => {
     // Check if body is right
     if (!requestbody.app_id || !requestbody.app_secret) {
         res.status(400);
-        res.json({ "error": "Bad request", "hint": "Your request is missing something! Please look into the Documentation" });
+        res.json(config.messages.error.badRequest);
         api_log.writeLog("GET", "/AUTH/", 400, { "app_id": requestbody.app_id });
         return;
     }
@@ -48,14 +48,14 @@ API.post("/auth/", (req, res) => {
         // Check if app can be found by id
         if (results == false) {
             res.status(401);
-            res.json({ "error": "Unknown app ID", "hint": "The used app id is unknown! Please check the devportal!" });
+            res.json(config.messages.error.unknownAppId);
             api_log.writeLog("GET", "/AUTH/", 401, { "app_id": requestbody.app_id });
             return;
         }
         // Check if id matches secret
         if (results[0].app_secret != requestbody.app_secret) {
             res.status(403);
-            res.json({ "error": "Wrong App secret", "hint": "The used app secret is wrong! Please check the devportal!" });
+            res.json(config.messages.error.badAppSecret);
             api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id });
             return;
         }
