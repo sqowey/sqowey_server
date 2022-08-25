@@ -77,6 +77,44 @@ API.post("/auth/", (req, res) => {
     });
 });
 
+API.get("/applications/", (req, res) => {
+    // Get the body
+    const requestbody = req.body;
+    const requestheaders = req.headers;
+    // Check if body is right
+    if (!requestbody.dev_id) {
+        res.status(400);
+        res.json(config.messages.error.badRequest);
+        api_log.writeLog("GET", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if authorization is structural correct
+    if (requestheaders.authorization.split(" ")[0] != "Dev") {
+        res.status(401);
+        res.json(config.messages.error.badAuth);
+        api_log.writeLog("GET", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if the dev id matches the dev secret
+    devportal_db_connection.query("SELECT dev_secret FROM developers WHERE user_id = \"" + requestbody.dev_id + "\"", function(error, results, fields) {
+        if (error) throw error;
+        // Check if app can be found by id
+        if (results == false) {
+            res.status(401);
+            res.json(config.messages.error.unknownDevId);
+            api_log.writeLog("GET", "/AUTH/", 401, { "dev_id": requestbody.dev_id });
+            return;
+        }
+        // Check if id matches secret
+        if (results[0].dev_secret != requestheaders.authorization.split(" ")[1]) {
+            res.status(403);
+            res.json(config.messages.error.badDevSecret);
+            api_log.writeLog("GET", "/AUTH/", 403, { "dev_id": requestbody.dev_id });
+            return;
+        }
+    });
+});
+
 // Run the express server
 API.listen(config.apiPort, () => {
     // Log

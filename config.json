@@ -49,7 +49,10 @@
         "error": {
             "badRequest": { "error": "Bad request", "details": "Your request is missing something! Please look into the Documentation" },
             "unknownAppId": { "error": "Unknown app ID", "details": "The used app id is unknown! Please check the devportal!" },
-            "badAppSecret": { "error": "Wrong App secret", "details": "The used app secret is wrong! Please check the devportal!" }
+            "unknownDevId": { "error": "Unknown dev ID", "details": "The used dev id is unknown! Please check the devportal!" },
+            "badAppSecret": { "error": "Wrong App secret", "details": "The used app secret is wrong! Please check the devportal!" },
+            "badDevSecret": { "error": "Wrong Dev secret", "details": "The used dev secret is wrong! Please check the devportal!" },
+            "badAuth": { "error": "Bad Authorization", "details": "Your request is missing a structural correct authorization Header! Please check the Documentation and the Devportal!" }
         }
     }
 }
