@@ -156,6 +156,8 @@ API.get("/applications/", (req, res) => {
                 // Set response values
                 response.authentication.auth_token.requested = results[0].auth_registered || 0;
                 response.authentication.auth_token.token = results[0].auth_token || 0;
+                // Reduce tokens
+                reduceTokens(config.endpoint_cost.applications.get, requestbody.app_id);
                 // Send response
                 res.status(200);
                 res.json(response);
