@@ -81,6 +81,87 @@ API.get("/applications/", (req, res) => {
     // Get the body
     const requestbody = req.body;
     const requestheaders = req.headers;
+    // Check body
+    if (!requestbody.app_id || !requestbody.dev_id) {
+        res.status(400);
+        res.json(config.messages.error.badRequest);
+        api_log.writeLog("GET", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check authorization
+    if (!requestheaders.authorization) {
+        res.status(401);
+        res.json(config.messages.error.badAuth);
+        api_log.writeLog("GET", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if authorization is right
+    devportal_db_connection.query("SELECT dev_secret FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+        // Check if there is an error
+        if (error) throw error;
+        // Check if dev has been found
+        if (results == false) {
+            res.status(400);
+            res.json(config.messages.error.unknownDevId);
+            api_log.writeLog("GET", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+            return;
+        }
+        // Check if secret matches request secret
+        if (results[0].dev_secret != requestheaders.authorization.replace("Dev ", "")) {
+            res.status(401);
+            res.json(config.messages.error.badDevSecret);
+            api_log.writeLog("GET", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
+            return;
+        }
+        // Get application data
+        devportal_db_connection.query("SELECT dev_id, app_id, app_level, tokens, app_name, app_created, last_used, app_secret, status FROM apps WHERE app_id = '" + requestbody.app_id + "'", (error, results, fields) => {
+            // Check if there is an error
+            if (error) throw error;
+            // Check if app exists
+            if (results == false) {
+                res.status(401);
+                res.json(config.messages.error.unknownAppId);
+                api_log.writeLog("GET", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
+                return;
+            }
+            // Check if api is authorized to change the app
+            if (results[0].dev_id != requestbody.dev_id) {
+                res.status(403);
+                res.json(config.messages.error.badAppOwner);
+                api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id, "dev_id": "" });
+                return;
+            }
+            // Build the response json
+            const response = {
+                "owner": results[0].dev_id,
+                "authentication": {
+                    "app_secret": results[0].app_secret,
+                    "auth_token": {
+                        "requested": "",
+                        "token": ""
+                    }
+                },
+                "last_opened_in_devportal": results[0].last_used,
+                "app_name": results[0].app_name,
+                "app_id": results[0].app_id,
+                "status": results[0].status || 0,
+                "app_level": results[0].app_level,
+                "tokens_left": results[0].tokens,
+                "app_created": results[0].app_created
+            };
+            // Get the auth values
+            devportal_db_connection.query("SELECT auth_token, auth_registered FROM authentification WHERE app_id = '" + requestbody.app_id + "'", (error, results, fields) => {
+                // Check if there is an error
+                if (error) throw error;
+                // Set response values
+                response.authentication.auth_token.requested = results[0].auth_registered || 0;
+                response.authentication.auth_token.token = results[0].auth_token || 0;
+                // Send response
+                res.status(200);
+                res.json(response);
+            });
+        });
+    });
 });
 
 // Run the express server
