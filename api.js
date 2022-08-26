@@ -128,7 +128,7 @@ API.get("/applications/", (req, res) => {
             if (results[0].dev_id != requestbody.dev_id) {
                 res.status(403);
                 res.json(config.messages.error.badAppOwner);
-                api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id, "dev_id": "" });
+                api_log.writeLog("GET", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
                 return;
             }
             // Build the response json
@@ -159,6 +159,8 @@ API.get("/applications/", (req, res) => {
                 // Send response
                 res.status(200);
                 res.json(response);
+                // Log
+                api_log.writeLog("GET", "/APPLICATIONS/", 200, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
             });
         });
     });
