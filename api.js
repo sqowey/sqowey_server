@@ -4,6 +4,8 @@ const express = require("express");
 const mysql = require("mysql");
 // Get the api_log module
 const api_log = require("./api_log.js");
+// Get the authorizing module
+const authorize = require("./authorize.js");
 // Get the configuration file
 const config = require("./config.json");
 
