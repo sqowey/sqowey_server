@@ -1,86 +1,90 @@
 {
-    "apiPort": 3333,
-    "mysql_connections": {
-        "application": {
-            "host": "localhost",
-            "user": "root",
-            "password": "",
-            "database": "sqowey_devportal"
+    "general": {
+        "log_messages": {
+            "mysql": {
+                "connect": {
+                    "main": "Main Mysql-connection running as Thread: ",
+                    "tokenActions": "Token reducing Mysql-connection running as Thread: ",
+                    "authorization": "Authorization Mysql-connection running as Thread: "
+                },
+                "error": {
+                    "main": "Error on trying to connect the Main-Mysql-connection : ",
+                    "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
+                    "authorization": "Error on trying to connect the Authorization-Mysql-connection : "
+                }
+            },
+            "express": {
+                "connect": {
+                    "main": "Main Express server running on Port: "
+                }
+            }
+        },
+        "mysql_connections": {
+            "application": {
+                "host": "localhost",
+                "user": "root",
+                "password": "",
+                "database": "sqowey_devportal"
+            }
         }
     },
-    "endpointSettings": {
-        "auth": {
-            "tokenChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-        }
-    },
-    "endpoint_cost": {
-        "auth": {
-            "post": 100
+    "api": {
+        "port": 3333,
+        "endpointSettings": {
+            "auth": {
+                "tokenChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+            }
         },
-        "users": {
-            "get": 2,
-            "patch": 5
-        },
-        "statistics": {
-            "get": 2
-        },
-        "servers": {
-            "get": 5,
-            "patch": 10
-        },
-        "client": {
-            "get": 10,
-            "post": 10,
-            "patch": 5,
-            "delete": 1000
+        "endpoint_cost": {
+            "auth": {
+                "post": 100
+            },
+            "users": {
+                "get": 2,
+                "patch": 5
+            },
+            "statistics": {
+                "get": 2
+            },
+            "servers": {
+                "get": 5,
+                "patch": 10
+            },
+            "client": {
+                "get": 10,
+                "post": 10,
+                "patch": 5,
+                "delete": 1000
+            },
+            "messages": {
+                "get": 2,
+                "post": 3,
+                "patch": 5,
+                "delete": 5
+            },
+            "applications": {
+                "get": 25,
+                "patch": 50
+            }
         },
         "messages": {
-            "get": 2,
-            "post": 3,
-            "patch": 5,
-            "delete": 5
-        },
-        "applications": {
-            "get": 25,
-            "patch": 50
-        }
-    },
-    "messages": {
-        "error": {
-            "badAuth": { "error": "Bad Authorization", "details": "Your request is missing a structural correct authorization Header! Please check the Documentation and the Devportal!" },
-            "badRequest": { "error": "Bad request", "details": "Your request is missing something! Please look into the Documentation" },
-            "unknownAppId": { "error": "Unknown app ID", "details": "The used app id is unknown! Please check the devportal!" },
-            "unknownDevId": { "error": "Unknown dev ID", "details": "The used dev id is unknown! Please check the devportal!" },
-            "badAppSecret": { "error": "Wrong App secret", "details": "The used app secret is wrong! Please check the devportal!" },
-            "badDevSecret": { "error": "Wrong Dev secret", "details": "The used dev secret is wrong! Please check the devportal!" },
-            "badAppOwner": { "error": "Wrong App owner", "details": "We couldn't map this app to your developer account!" },
-            "noMoreApps": { "error": "Forbidden", "details": "You already have too many Apps! Please check the devportal" }
-        }
-    },
-    "log_messages": {
-        "mysql": {
-            "connect": {
-                "main": "Main Mysql-connection running as Thread: ",
-                "tokenActions": "Token reducing Mysql-connection running as Thread: ",
-                "authorization": "Authorization Mysql-connection running as Thread: "
-            },
             "error": {
-                "main": "Error on trying to connect the Main-Mysql-connection : ",
-                "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
-                "authorization": "Error on trying to connect the Authorization-Mysql-connection : "
+                "badAuth": { "error": "Bad Authorization", "details": "Your request is missing a structural correct authorization Header! Please check the Documentation and the Devportal!" },
+                "badRequest": { "error": "Bad request", "details": "Your request is missing something! Please look into the Documentation" },
+                "unknownAppId": { "error": "Unknown app ID", "details": "The used app id is unknown! Please check the devportal!" },
+                "unknownDevId": { "error": "Unknown dev ID", "details": "The used dev id is unknown! Please check the devportal!" },
+                "badAppSecret": { "error": "Wrong App secret", "details": "The used app secret is wrong! Please check the devportal!" },
+                "badDevSecret": { "error": "Wrong Dev secret", "details": "The used dev secret is wrong! Please check the devportal!" },
+                "badAppOwner": { "error": "Wrong App owner", "details": "We couldn't map this app to your developer account!" },
+                "noMoreApps": { "error": "Forbidden", "details": "You already have too many Apps! Please check the devportal" }
             }
         },
-        "express": {
-            "connect": {
-                "main": "Main Express server running on Port: "
+        "verification": {
+            "length_limits": {
+                "app_id": 12,
+                "user_id": 36,
+                "server_id": 8
             }
-        }
-    },
-    "verification": {
-        "length_limits": {
-            "app_id": 12,
-            "user_id": 36,
-            "server_id": 8
         }
     }
 }

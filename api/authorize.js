@@ -5,13 +5,13 @@ const mysql = require("mysql");
 const config = require("../config.json");
 
 // Create a connection variable
-var con = mysql.createConnection(config.mysql_connections.application);
+var con = mysql.createConnection(config.general.mysql_connections.application);
 con.connect(function(err) {
     if (err) {
-        console.error(config.log_messages.mysql.error.authorization + err.stack);
+        console.error(config.general.log_messages.mysql.error.authorization + err.stack);
         return;
     }
-    console.log(config.log_messages.mysql.connect.authorization + con.threadId);
+    console.log(config.general.log_messages.mysql.connect.authorization + con.threadId);
 });
 
 // Token-Authorization function
