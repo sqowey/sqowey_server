@@ -6,6 +6,8 @@ const mysql = require("mysql");
 const api_log = require("./api_log.js");
 // Get the authorizing module
 const authorize = require("./authorize.js");
+// Get the tokenActions module
+const tokens = require("./tokenActions.js");
 // Get the configuration file
 const config = require("./config.json");
 
@@ -25,13 +27,6 @@ API.use(
     })
 );
 API.use(express.json());
-
-// Function to reduce tokens
-function reduceTokens(tokens, app_id) {
-    devportal_db_connection.query("UPDATE apps SET tokens = tokens - " + tokens + " WHERE app_id = '" + app_id + "'", function(error, results, fields) {
-        if (error) throw error;
-    });
-}
 
 // Auth endpoint
 API.post("/auth/", (req, res) => {
@@ -62,7 +57,7 @@ API.post("/auth/", (req, res) => {
             return;
         }
         // Reduce tokens
-        reduceTokens(config.endpoint_cost.auth.post, requestbody.app_id);
+        tokens.reduce(config.endpoint_cost.auth.post, requestbody.app_id);
         // Delete old auth token entry
         devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
         // Create new auth token
@@ -159,7 +154,7 @@ API.get("/applications/", (req, res) => {
                 response.authentication.auth_token.requested = results[0].auth_registered || 0;
                 response.authentication.auth_token.token = results[0].auth_token || 0;
                 // Reduce tokens
-                reduceTokens(config.endpoint_cost.applications.get, requestbody.app_id);
+                tokens.reduce(config.endpoint_cost.applications.get, requestbody.app_id);
                 // Send response
                 res.status(200);
                 res.json(response);
