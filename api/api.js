@@ -11,10 +11,10 @@ const tokens = require("./tokenActions.js");
 // Get the verification module
 const verify = require("./verify.js");
 // Get the configuration file
-const config = require("./config.json");
+const config = require("../config.json");
 
 // Create a connection variable
-var devportal_db_connection = mysql.createConnection(config.mysql_connections.application);
+var devportal_db_connection = mysql.createConnection(config.general.mysql_connections.application);
 
 // Initialize the api log
 api_log.initLogFile();
@@ -37,7 +37,7 @@ API.post("/auth/", (req, res) => {
     // Check if body is right
     if (!requestbody.app_id || !requestbody.app_secret) {
         res.status(400);
-        res.json(config.messages.error.badRequest);
+        res.json(config.api.messages.error.badRequest);
         api_log.writeLog("GET", "/AUTH/", 400, { "app_id": requestbody.app_id });
         return;
     }
@@ -47,25 +47,25 @@ API.post("/auth/", (req, res) => {
         // Check if app can be found by id
         if (results == false) {
             res.status(401);
-            res.json(config.messages.error.unknownAppId);
+            res.json(config.api.messages.error.unknownAppId);
             api_log.writeLog("GET", "/AUTH/", 401, { "app_id": requestbody.app_id });
             return;
         }
         // Check if id matches secret
         if (results[0].app_secret != requestbody.app_secret) {
             res.status(403);
-            res.json(config.messages.error.badAppSecret);
+            res.json(config.api.messages.error.badAppSecret);
             api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id });
             return;
         }
         // Reduce tokens
-        tokens.reduce(config.endpoint_cost.auth.post, requestbody.app_id);
+        tokens.reduce(config.api.endpoint_cost.auth.post, requestbody.app_id);
         // Delete old auth token entry
         devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
         // Create new auth token
         var auth_token = "";
         for (let i = 1; i < 48; i++) {
-            auth_token += config.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.endpointSettings.auth.tokenChars.length));
+            auth_token += config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
         }
         // Insert the auth token
         devportal_db_connection.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + requestbody.app_id + "', '" + auth_token + "')");
@@ -83,14 +83,14 @@ API.get("/applications/", (req, res) => {
     // Check body
     if (!requestbody.app_id || !requestbody.dev_id) {
         res.status(400);
-        res.json(config.messages.error.badRequest);
+        res.json(config.api.messages.error.badRequest);
         api_log.writeLog("GET", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
         return;
     }
     // Check authorization
     if (!requestheaders.authorization) {
         res.status(401);
-        res.json(config.messages.error.badAuth);
+        res.json(config.api.messages.error.badAuth);
         api_log.writeLog("GET", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
         return;
     }
@@ -101,14 +101,14 @@ API.get("/applications/", (req, res) => {
         // Check if dev has been found
         if (results == false) {
             res.status(400);
-            res.json(config.messages.error.unknownDevId);
+            res.json(config.api.messages.error.unknownDevId);
             api_log.writeLog("GET", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
             return;
         }
         // Check if secret matches request secret
         if (results[0].dev_secret != requestheaders.authorization.replace("Dev ", "")) {
             res.status(401);
-            res.json(config.messages.error.badDevSecret);
+            res.json(config.api.messages.error.badDevSecret);
             api_log.writeLog("GET", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
             return;
         }
@@ -119,14 +119,14 @@ API.get("/applications/", (req, res) => {
             // Check if app exists
             if (results == false) {
                 res.status(401);
-                res.json(config.messages.error.unknownAppId);
+                res.json(config.api.messages.error.unknownAppId);
                 api_log.writeLog("GET", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
                 return;
             }
             // Check if api is authorized to change the app
             if (results[0].dev_id != requestbody.dev_id) {
                 res.status(403);
-                res.json(config.messages.error.badAppOwner);
+                res.json(config.api.messages.error.badAppOwner);
                 api_log.writeLog("GET", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
                 return;
             }
@@ -148,6 +148,7 @@ API.get("/applications/", (req, res) => {
                 "tokens_left": results[0].tokens,
                 "app_created": results[0].app_created
             };
+            console.log("SELECT auth_token, auth_registered FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
             // Get the auth values
             devportal_db_connection.query("SELECT auth_token, auth_registered FROM authentification WHERE app_id = '" + requestbody.app_id + "'", (error, results, fields) => {
                 // Check if there is an error
@@ -156,7 +157,7 @@ API.get("/applications/", (req, res) => {
                 response.authentication.auth_token.requested = results[0].auth_registered || 0;
                 response.authentication.auth_token.token = results[0].auth_token || 0;
                 // Reduce tokens
-                tokens.reduce(config.endpoint_cost.applications.get, requestbody.app_id);
+                tokens.reduce(config.api.endpoint_cost.applications.get, requestbody.app_id);
                 // Send response
                 res.status(200);
                 res.json(response);
@@ -168,15 +169,15 @@ API.get("/applications/", (req, res) => {
 });
 
 // Run the express server
-API.listen(config.apiPort, () => {
+API.listen(config.api.port, () => {
     // Log
-    console.log(config.log_messages.express.connect.main + config.apiPort);
+    console.log(config.general.log_messages.express.connect.main + config.apiPort);
     // Connect to 
     devportal_db_connection.connect(function(err) {
         if (err) {
-            console.error(config.log_messages.mysql.error.main + err.stack);
+            console.error(config.general.log_messages.mysql.error.main + err.stack);
             return;
         }
-        console.log(config.log_messages.mysql.connect.main + devportal_db_connection.threadId);
+        console.log(config.general.log_messages.mysql.connect.main + devportal_db_connection.threadId);
     });
 });

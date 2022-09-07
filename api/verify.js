@@ -1,5 +1,5 @@
 // Get the configuration file
-const config = require("./config.json");
+const config = require("../config.json");
 
 // Check if app_id is structurally correct
 function verify_app_id(app_id = "") {
