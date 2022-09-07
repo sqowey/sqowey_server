@@ -2,7 +2,7 @@
 const mysql = require("mysql");
 
 // Get the configuration file
-const config = require("./config.json");
+const config = require("../config.json");
 
 // Create a connection variable
 var con = mysql.createConnection(config.mysql_connections.application);

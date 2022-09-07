@@ -11,7 +11,7 @@ const tokens = require("./tokenActions.js");
 // Get the verification module
 const verify = require("./verify.js");
 // Get the configuration file
-const config = require("./config.json");
+const config = require("../config.json");
 
 // Create a connection variable
 var devportal_db_connection = mysql.createConnection(config.mysql_connections.application);
