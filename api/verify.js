@@ -69,6 +69,19 @@ function verify_app_secret(app_secret = "") {
     return true;
 }
 
+// Verifiying function for app name
+function verify_app_name(app_name = "") {
+    // Check if app_name is sent
+    if (app_name == "") {
+        return false;
+    }
+    // Check if chars match
+    if (!app_name.match(/^([a-zA-Z0-9]){3-12}$/)) {
+        return false;
+    }
+    return true;
+}
+
 // Export the functions
 module.exports = {
     app_id: verify_app_id,
