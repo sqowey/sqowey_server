@@ -11,7 +11,7 @@ con.connect(function(err) {
         console.error('Error connecting to mysql: ' + err.stack);
         return;
     }
-    console.log('Mysql connection running as: ' + con.threadId);
+    console.log(config.log_messages.mysql.connect.authorization + con.threadId);
 });
 
 // Token-Authorization function

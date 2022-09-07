@@ -175,6 +175,6 @@ API.listen(config.apiPort, () => {
             console.error('Error connecting to mysql: ' + err.stack);
             return;
         }
-        console.log('Mysql connection running as: ' + devportal_db_connection.threadId);
+        console.log(config.log_messages.mysql.connect.main + devportal_db_connection.threadId);
     });
 });

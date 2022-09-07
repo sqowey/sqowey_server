@@ -56,5 +56,14 @@
             "badAppOwner": { "error": "Wrong App owner", "details": "We couldn't map this app to your developer account!" },
             "noMoreApps": { "error": "Forbidden", "details": "You already have too many Apps! Please check the devportal" }
         }
+    },
+    "log_messages": {
+        "mysql": {
+            "connect": {
+                "main": "Main Mysql-connection running as Thread: ",
+                "tokenActions": "Token reducing Mysql-connection running as Thread: ",
+                "authorization": "Authorization Mysql-connection running as Thread: "
+            }
+        }
     }
 }
