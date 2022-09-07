@@ -55,5 +55,6 @@ function verify_server_id(server_id = "") {
 // Export the functions
 module.exports = {
     app_id: verify_app_id,
-    user_id: verify_user_id
+    user_id: verify_user_id,
+    server_id: verify_server_id
 }
