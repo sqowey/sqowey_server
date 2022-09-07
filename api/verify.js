@@ -8,7 +8,7 @@ function verify_app_id(app_id = "") {
         return false;
     }
     // Check if length matches
-    if (app_id.length != config.verification.length_limits.app_id) {
+    if (app_id.length != config.api.verification.length_limits.app_id) {
         return false;
     }
     // Check if chars match
@@ -25,7 +25,7 @@ function verify_user_id(user_id = "") {
         return false;
     }
     // Check if length matches
-    if (user_id.length != config.verification.length_limits.user_id) {
+    if (user_id.length != config.api.verification.length_limits.user_id) {
         return false;
     }
     // Check if chars match
@@ -42,7 +42,7 @@ function verify_server_id(server_id = "") {
         return false;
     }
     // Check if length matches
-    if (server_id.length != config.verification.length_limits.server_id) {
+    if (server_id.length != config.api.verification.length_limits.server_id) {
         return false;
     }
     // Check if chars match
