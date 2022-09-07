@@ -30,7 +30,9 @@ API.use(
 );
 API.use(express.json());
 
+// 
 // Auth endpoint
+// 
 API.post("/auth/", (req, res) => {
     // Get the body
     const requestbody = req.body;
@@ -89,6 +91,9 @@ API.post("/auth/", (req, res) => {
     });
 });
 
+// 
+// Applications endpoint
+// 
 API.get("/applications/", (req, res) => {
     // Get the body
     const requestbody = req.body;
@@ -193,8 +198,6 @@ API.get("/applications/", (req, res) => {
         });
     });
 });
-
-
 API.post("/applications/", (req, res) => {
     // Get the body
     const requestbody = req.body;
