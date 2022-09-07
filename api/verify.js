@@ -87,5 +87,6 @@ module.exports = {
     app_id: verify_app_id,
     user_id: verify_user_id,
     server_id: verify_server_id,
-    app_secret: verify_app_secret
+    app_secret: verify_app_secret,
+    app_name: verify_app_name
 }
