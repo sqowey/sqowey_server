@@ -18,7 +18,25 @@ function verify_app_id(app_id = "") {
     return true;
 }
 
+// Check if user_id is structurally correct
+function verify_user_id(user_id = "") {
+    // Check if user_id is sent
+    if (user_id == "") {
+        return false;
+    }
+    // Check if length matches
+    if (user_id.length != config.verification.length_limits.user_id) {
+        return false;
+    }
+    // Check if chars match
+    if (!user_id.match(/^([a-z0-9-]){36}$/)) {
+        return false;
+    }
+    return true;
+}
+
 // Export the functions
 module.exports = {
-    app_id: verify_app_id
+    app_id: verify_app_id,
+    user_id: verify_user_id
 }

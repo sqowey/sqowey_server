@@ -78,7 +78,8 @@
     },
     "verification": {
         "length_limits": {
-            "app_id": 12
+            "app_id": 12,
+            "user_id": 36
         }
     }
 }
