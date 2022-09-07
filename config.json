@@ -77,7 +77,8 @@
                 "badDevSecret": { "error": "Wrong Dev secret", "details": "The used dev secret is wrong! Please check the devportal!" },
                 "badAppOwner": { "error": "Wrong App owner", "details": "We couldn't map this app to your developer account!" },
                 "noMoreApps": { "error": "Forbidden", "details": "You already have too many Apps! Please check the devportal" },
-                "unableVerifyAppId": { "error": "Unknown to verify app ID", "details": "The used app id is not formatted as it should be! Please check your code!" }
+                "unableVerifyAppId": { "error": "Unknown to verify app ID", "details": "The used app id is not formatted as it should be! Please check your code!" },
+                "unableVerifyDevId": { "error": "Unknown to verify dev ID", "details": "The used dev id is not formatted as it should be! Please check your code!" }
             }
         },
         "verification": {

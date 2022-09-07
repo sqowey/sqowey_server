@@ -101,6 +101,12 @@ API.get("/applications/", (req, res) => {
         api_log.writeLog("GET", "/AUTH/", 400, { "app_id": requestbody.app_id });
         return;
     }
+    if (!verify.user_id(requestbody.dev_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyDevId);
+        api_log.writeLog("GET", "/AUTH/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
     // Check authorization
     if (!requestheaders.authorization) {
         res.status(401);
