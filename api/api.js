@@ -109,7 +109,7 @@ API.get("/applications/", (req, res) => {
         if (results[0].dev_secret != requestheaders.authorization.replace("Dev ", "")) {
             res.status(401);
             res.json(config.api.messages.error.badDevSecret);
-            api_log.writeLog("GET", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
+            api_log.writeLog("GET", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
             return;
         }
         // Get application data
