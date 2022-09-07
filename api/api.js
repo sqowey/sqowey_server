@@ -48,6 +48,12 @@ API.post("/auth/", (req, res) => {
         api_log.writeLog("GET", "/AUTH/", 400, { "app_id": requestbody.app_id });
         return;
     }
+    if (!verify.app_secret(requestbody.app_secret)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyAppSecret);
+        api_log.writeLog("GET", "/AUTH/", 400, { "app_secret": requestbody.app_secret });
+        return;
+    }
     // Check if the app id matches the app secret
     devportal_db_connection.query("SELECT app_secret FROM apps WHERE app_id = \"" + requestbody.app_id + "\"", function(error, results, fields) {
         if (error) throw error;

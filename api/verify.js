@@ -52,6 +52,23 @@ function verify_server_id(server_id = "") {
     return true;
 }
 
+// Verifing function for app secret
+function verify_app_secret(app_secret = "") {
+    // Check if app_secret is sent
+    if (app_secret == "") {
+        return false;
+    }
+    // Check if length matches
+    if (app_secret.length != config.api.verification.length_limits.app_secret) {
+        return false;
+    }
+    // Check if chars match
+    if (!app_secret.match(/^([a-zA-Z0-9]){64}$/)) {
+        return false;
+    }
+    return true;
+}
+
 // Export the functions
 module.exports = {
     app_id: verify_app_id,
