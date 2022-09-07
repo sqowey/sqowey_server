@@ -252,11 +252,11 @@ API.post("/applications/", (req, res) => {
 
 
 
-// Run the express server
+// Run the servers
 API.listen(config.api.port, () => {
     // Log
     console.log(config.general.log_messages.express.connect.main + config.apiPort);
-    // Connect to 
+    // Connect to the database
     devportal_db_connection.connect(function(err) {
         if (err) {
             console.error(config.general.log_messages.mysql.error.main + err.stack);
