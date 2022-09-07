@@ -172,7 +172,7 @@ API.listen(config.apiPort, () => {
     // Connect to 
     devportal_db_connection.connect(function(err) {
         if (err) {
-            console.error('Error connecting to mysql: ' + err.stack);
+            console.error(config.log_messages.mysql.error.main + err.stack);
             return;
         }
         console.log(config.log_messages.mysql.connect.main + devportal_db_connection.threadId);

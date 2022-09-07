@@ -63,6 +63,11 @@
                 "main": "Main Mysql-connection running as Thread: ",
                 "tokenActions": "Token reducing Mysql-connection running as Thread: ",
                 "authorization": "Authorization Mysql-connection running as Thread: "
+            },
+            "error": {
+                "main": "Error on trying to connect the Main-Mysql-connection : ",
+                "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
+                "authorization": "Error on trying to connect the Authorization-Mysql-connection : "
             }
         }
     }

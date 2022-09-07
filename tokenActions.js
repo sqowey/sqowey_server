@@ -8,7 +8,7 @@ const config = require("./config.json");
 var con = mysql.createConnection(config.mysql_connections.application);
 con.connect(function(err) {
     if (err) {
-        console.error('Error connecting to mysql: ' + err.stack);
+        console.error(config.log_messages.mysql.error.tokenActions + err.stack);
         return;
     }
     console.log(config.log_messages.mysql.connect.tokenActions + con.threadId);
