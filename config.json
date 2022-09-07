@@ -75,5 +75,10 @@
                 "main": "Main Express server running on Port: "
             }
         }
+    },
+    "verification": {
+        "length_limits": {
+            "app_id": 12
+        }
     }
 }

@@ -8,6 +8,8 @@ const api_log = require("./api_log.js");
 const authorize = require("./authorize.js");
 // Get the tokenActions module
 const tokens = require("./tokenActions.js");
+// Get the verification module
+const verify = require("./verify.js");
 // Get the configuration file
 const config = require("./config.json");
 
