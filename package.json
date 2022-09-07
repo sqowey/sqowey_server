@@ -2,9 +2,9 @@
     "name": "sqowey_server",
     "version": "1.0.0",
     "description": "API-Server for the Messenger Sqowey",
-    "main": "api.js",
+    "main": "./api/api.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "api": "node ./api/api.js"
     },
     "repository": {
         "type": "git",
