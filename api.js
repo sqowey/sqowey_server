@@ -168,7 +168,7 @@ API.get("/applications/", (req, res) => {
 // Run the express server
 API.listen(config.apiPort, () => {
     // Log
-    console.log("Express server running on Port:" + config.apiPort);
+    console.log(config.log_messages.express.connect.main + config.apiPort);
     // Connect to 
     devportal_db_connection.connect(function(err) {
         if (err) {

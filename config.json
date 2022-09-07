@@ -69,6 +69,11 @@
                 "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
                 "authorization": "Error on trying to connect the Authorization-Mysql-connection : "
             }
+        },
+        "express": {
+            "connect": {
+                "main": "Main Express server running on Port: "
+            }
         }
     }
 }
