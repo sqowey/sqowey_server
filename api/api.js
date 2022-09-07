@@ -194,6 +194,61 @@ API.get("/applications/", (req, res) => {
     });
 });
 
+
+API.post("/applications/", (req, res) => {
+    // Get the body
+    const requestbody = req.body;
+    const requestheaders = req.headers;
+    // Check body
+    if (!requestbody.app_name || !requestbody.dev_id) {
+        res.status(400);
+        res.json(config.api.messages.error.badRequest);
+        api_log.writeLog("POST", "/APPLICATIONS/", 400, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Verify the input
+    if (!verify.app_name(requestbody.app_name)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyAppName);
+        api_log.writeLog("POST", "/AUTH/", 400, { "app_name": requestbody.app_name });
+        return;
+    }
+    if (!verify.user_id(requestbody.dev_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyDevId);
+        api_log.writeLog("POST", "/AUTH/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check authorization
+    if (!requestheaders.authorization) {
+        res.status(401);
+        res.json(config.api.messages.error.badAuth);
+        api_log.writeLog("POST", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if authorization is right
+    devportal_db_connection.query("SELECT dev_secret FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+        // Check if there is an error
+        if (error) throw error;
+        // Check if dev has been found
+        if (results == false) {
+            res.status(400);
+            res.json(config.api.messages.error.unknownDevId);
+            api_log.writeLog("POST", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+            return;
+        }
+        // Check if secret matches request secret
+        if (results[0].dev_secret != requestheaders.authorization.replace("Dev ", "")) {
+            res.status(401);
+            res.json(config.api.messages.error.badDevSecret);
+            api_log.writeLog("POST", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
+            return;
+        }
+    });
+});
+
+
+
 // Run the express server
 API.listen(config.api.port, () => {
     // Log
