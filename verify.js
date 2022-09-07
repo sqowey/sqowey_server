@@ -13,7 +13,7 @@ function verify_app_id(app_id = "") {
     }
     // Check if chars match
     if (!app_id.match(/^([a-f0-9]){12}$/)) {
-        return "a";
+        return false;
     }
     return true;
 }
