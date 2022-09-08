@@ -21,7 +21,24 @@ function reduceTokens(tokens = 1, app_id) {
     });
 }
 
+// Token checker 
+function checkTokens(app_id, neededTokens = 100, callback) {
+    con.query("SELECT tokens FROM apps WHERE app_id = '" + app_id + "'", function(error, results, fields) {
+        if (!results[0].tokens || !results) {
+            callback(true);
+            return;
+        }
+        if (results[0].tokens >= neededTokens) {
+            callback(true);
+            return;
+        }
+        callback(false);
+    });
+
+}
+
 // Export functions
 module.exports = {
-    reduce: reduceTokens
+    reduce: reduceTokens,
+    check: checkTokens
 }
