@@ -257,6 +257,9 @@ API.post("/applications/", (req, res) => {
             return;
         }
     });
+    // Generate a new app id
+    generate.app_id((app_id) => {
+    });
 });
 
 
