@@ -24,7 +24,7 @@ function reduceTokens(tokens = 1, app_id) {
 // Token checker 
 function checkTokens(app_id, neededTokens = 100, callback) {
     con.query("SELECT tokens FROM apps WHERE app_id = '" + app_id + "'", function(error, results, fields) {
-        if (!results[0].tokens || !results) {
+        if (!results) {
             callback(true);
             return;
         }
