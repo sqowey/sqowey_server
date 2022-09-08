@@ -5,7 +5,8 @@
     "main": "./api/api.js",
     "scripts": {
         "api": "node ./api/api.js",
-        "tokens": "node ./api/tokens/reset.js"
+        "tokens": "node ./api/tokens/reset.js",
+        "ndmn_tokens": "nodemon ./api/tokens/reset.js"
     },
     "repository": {
         "type": "git",
