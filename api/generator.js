@@ -27,6 +27,30 @@ function newAuthToken() {
     return auth_token;
 }
 
+function newAppID(callback) {
+    // Create new auth token
+    var new_app_id = "";
+    // Loop
+    for (let i = 1; i < config.api.verification.length_limits.app_id; i++) {
+        // Generate a new random character
+        const new_char = config.api.endpointSettings.applications.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.applications.tokenChars.length));
+        // Add the newly generated char to the full string
+        new_app_id += new_char;
+    }
+    // Check if the app id is already in use
+    db_conn.query("SELECT * FROM apps WHERE app_id = '" + new_app_id + "'", function(error, results, fields) {
+        // Check for error
+        if (error) throw error;
+        // Check for results
+        if (!results[0]) {
+            // Check if token matches
+            callback(new_app_id);
+        } else {
+            newAppID(callback);
+        }
+    });
+}
+
 module.exports = {
     auth_token: newAuthToken
 }
