@@ -14,3 +14,19 @@ conn.connect(function(err) {
     }
     console.log(config.general.log_messages.mysql.connect.token_reset + conn.threadId);
 });
+
+
+// Function to get midnight-reset-timed apps
+function getMidnighters() {
+    // Get the B1 apps from the database
+    conn.query("SELECT * FROM apps WHERE app_level = 'B1' OR app_level = 'B2' OR app_level = 'A1' OR app_level = 'A2'", function(error, results, fields) {
+        // Check for error
+        if (error) throw error;
+        // Check for results
+        if (!results) {
+            console.log("No midnight-reset-apps found");
+        }
+    });
+}
+
+getMidnighters();
