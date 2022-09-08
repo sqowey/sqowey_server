@@ -80,7 +80,8 @@
                 "unableVerifyAppId": { "error": "Unable to verify app ID", "details": "The used app id is not formatted as it should be! Please check your code!" },
                 "unableVerifyDevId": { "error": "Unable to verify dev ID", "details": "The used dev id is not formatted as it should be! Please check your code!" },
                 "unableVerifyAppSecret": { "error": "Unable to verify app Secret", "details": "The used app secret is not formatted as it should be! Please check your code!" },
-                "unableVerifyAppName": { "error": "Invalid app name", "details": "The sent app name can't be used! Please check your code and the Documentation!" }
+                "unableVerifyAppName": { "error": "Invalid app name", "details": "The sent app name can't be used! Please check your code and the Documentation!" },
+                "limit_reached": { "error": "Too Many Requests", "details": "You reached your token limit! Please check the devportal!" }
             }
         },
         "verification": {

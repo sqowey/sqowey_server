@@ -73,21 +73,31 @@ API.post("/auth/", (req, res) => {
             api_log.writeLog("GET", "/AUTH/", 403, { "app_id": requestbody.app_id });
             return;
         }
-        // Reduce tokens
-        tokens.reduce(config.api.endpoint_cost.auth.post, requestbody.app_id);
-        // Delete old auth token entry
-        devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
-        // Create new auth token
-        var auth_token = "";
-        for (let i = 1; i < 48; i++) {
-            auth_token += config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
-        }
-        // Insert the auth token
-        devportal_db_connection.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + requestbody.app_id + "', '" + auth_token + "')");
-        // Respond with auth token
-        res.status(201);
-        res.json({ "app_id": requestbody.app_id, "auth_token": auth_token });
-        api_log.writeLog("GET", "/AUTH/", 201, { "app_id": requestbody.app_id, "auth_token": auth_token });
+        // Check if enougth tokens are left
+        tokens.check(requestbody.app_id, config.api.endpoint_cost.auth.post, (check) => {
+            if (!check) {
+                res.status(429);
+                res.json(config.api.messages.error.limit_reached);
+                api_log.writeLog("GET", "/AUTH/", 429, { "app_id": requestbody.app_id });
+                return;
+            } else {
+                // Reduce tokens
+                tokens.reduce(config.api.endpoint_cost.auth.post, requestbody.app_id);
+                // Delete old auth token entry
+                devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
+                // Create new auth token
+                var auth_token = "";
+                for (let i = 1; i < 48; i++) {
+                    auth_token += config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
+                }
+                // Insert the auth token
+                devportal_db_connection.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + requestbody.app_id + "', '" + auth_token + "')");
+                // Respond with auth token
+                res.status(201);
+                res.json({ "app_id": requestbody.app_id, "auth_token": auth_token });
+                api_log.writeLog("GET", "/AUTH/", 201, { "app_id": requestbody.app_id, "auth_token": auth_token });
+            }
+        });
     });
 });
 
