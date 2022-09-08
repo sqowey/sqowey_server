@@ -3,6 +3,16 @@ const config = require("../config.json");
 // Get the mysql module
 const mysql = require("mysql");
 
+// Create a connection to the db
+var db_conn = mysql.createConnection(config.general.mysql_connections.application);
+db_conn.connect(function(err) {
+    if (err) {
+        console.error(config.general.log_messages.mysql.error.generator + err.stack);
+        return;
+    }
+    console.log(config.general.log_messages.mysql.connect.generator + db_conn.threadId);
+});
+
 function newAuthToken() {
     // Create new auth token
     var auth_token = "";
