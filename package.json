@@ -4,7 +4,8 @@
     "description": "API-Server for the Messenger Sqowey",
     "main": "./api/api.js",
     "scripts": {
-        "api": "node ./api/api.js"
+        "api": "node ./api/api.js",
+        "tokens": "node ./api/tokens/reset.js"
     },
     "repository": {
         "type": "git",
