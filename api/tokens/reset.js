@@ -18,14 +18,17 @@ conn.connect(function(err) {
 
 // Function to get midnight-reset-timed apps
 function getMidnighters() {
+    // Create a variable to store the apps
+    let midnight_apps = [];
     // Get the B1 apps from the database
-    conn.query("SELECT * FROM apps WHERE app_level = 'B1' OR app_level = 'B2' OR app_level = 'A1' OR app_level = 'A2'", function(error, results, fields) {
+    conn.query("SELECT app_level, app_id FROM apps WHERE app_level = 'B1' OR app_level = 'B2' OR app_level = 'A1' OR app_level = 'A2'", function(error, results, fields) {
         // Check for error
         if (error) throw error;
         // Check for results
         if (!results) {
             console.log("No midnight-reset-apps found");
         }
+        midnight_apps = JSON.parse(JSON.stringify(results));
     });
 }
 
