@@ -255,7 +255,7 @@ API.post("/applications/", (req, res) => {
 // Run the servers
 API.listen(config.api.port, () => {
     // Log
-    console.log(config.general.log_messages.express.connect.main + config.apiPort);
+    console.log(config.general.log_messages.express.connect.main + config.api.port);
     // Connect to the database
     devportal_db_connection.connect(function(err) {
         if (err) {
