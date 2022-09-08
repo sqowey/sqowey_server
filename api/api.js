@@ -8,6 +8,8 @@ const api_log = require("./api_log.js");
 const authorize = require("./authorize.js");
 // Get the tokenActions module
 const tokens = require("./tokenActions.js");
+// Get the generator module
+const generate = require("./generator.js");
 // Get the verification module
 const verify = require("./verify.js");
 // Get the configuration file
@@ -85,11 +87,8 @@ API.post("/auth/", (req, res) => {
                 tokens.reduce(config.api.endpoint_cost.auth.post, requestbody.app_id);
                 // Delete old auth token entry
                 devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
-                // Create new auth token
-                var auth_token = "";
-                for (let i = 1; i < 48; i++) {
-                    auth_token += config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
-                }
+                // Generate a new auth token
+                const auth_token = generate.auth_token();
                 // Insert the auth token
                 devportal_db_connection.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + requestbody.app_id + "', '" + auth_token + "')");
                 // Respond with auth token
