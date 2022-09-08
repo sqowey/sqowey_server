@@ -35,6 +35,9 @@
         "endpointSettings": {
             "auth": {
                 "tokenChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+            },
+            "applications": {
+                "tokenChars": "abcdef1234567890"
             }
         },
         "endpoint_cost": {
