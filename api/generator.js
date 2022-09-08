@@ -52,5 +52,6 @@ function newAppID(callback) {
 }
 
 module.exports = {
-    auth_token: newAuthToken
+    auth_token: newAuthToken,
+    app_id: newAppID
 }
