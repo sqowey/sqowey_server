@@ -65,3 +65,46 @@ function resetMidnighters() {
         });
     });
 }
+
+// Function to get midnight-reset-timed apps
+function getHourResetters(callback) {
+    // Create a variable to store the apps
+    let hour_apps = [];
+    // Get the E-apps from the database
+    conn.query("SELECT app_level, app_id, tokens FROM apps WHERE app_level = 'E1' OR app_level = 'E2'", function(error, results, fields) {
+        // Check for error
+        if (error) throw error;
+        // Check for results
+        if (!results) {
+            console.log("No hour-reset-apps found");
+        }
+        hour_apps = JSON.parse(JSON.stringify(results));
+        callback(hour_apps);
+    });
+}
+
+function resetHourResetters() {
+    getHourResetters((apps) => {
+        var tokens_refilled = 0;
+        apps.forEach(element => {
+            switch (element.app_level) {
+                case "E1":
+                    var tokens_refill = 50000;
+                    var tokens_needed = tokens_refill - element.tokens;
+                    break;
+                case "E2":
+                    var tokens_refill = 150000;
+                    var tokens_needed = tokens_refill - element.tokens;
+                    break;
+            }
+            if (tokens_needed < 0) {
+                tokens_needed = 0;
+            }
+            tokens_refilled += tokens_needed;
+            if (tokens_needed != 0) {
+                conn.query("UPDATE apps SET tokens = " + tokens_refill + " WHERE app_id = '" + element.app_id + "'");
+            }
+        });
+        console.log("Refilled:" + tokens_refilled);
+    });
+}
