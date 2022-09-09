@@ -2,6 +2,8 @@
 const config = require("../../config.json");
 // Get the mysql module
 const mysql = require("mysql");
+// Get the logger 
+const log = require("./logger.js")
 
 
 // Create a connection variable
