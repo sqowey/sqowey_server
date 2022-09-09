@@ -299,6 +299,11 @@ API.post("/applications/", (req, res) => {
             }
             // Generate the app secret
             const generated_app_secret = generate.app_secret();
+            // Create the application
+            devportal_db_connection.query("INSERT INTO apps (dev_id, app_id, app_level, tokens, app_name, app_secret) VALUES ('" + requestbody.dev_id + "', '" + app_id + "', 'B2', 75000, '" + requestbody.app_name + "', '" + generated_app_secret + "')", (error, results, fields) => {
+                // Check if there is an error
+                if (error) throw error;
+            });
         });
     });
 });
