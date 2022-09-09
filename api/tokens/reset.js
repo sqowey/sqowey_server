@@ -17,11 +17,11 @@ conn.connect(function(err) {
 
 
 // Function to get midnight-reset-timed apps
-function getMidnighters() {
+function getMidnighters(callback) {
     // Create a variable to store the apps
     let midnight_apps = [];
     // Get the B1 apps from the database
-    conn.query("SELECT app_level, app_id FROM apps WHERE app_level = 'B1' OR app_level = 'B2' OR app_level = 'A1' OR app_level = 'A2'", function(error, results, fields) {
+    conn.query("SELECT app_level, app_id, tokens FROM apps WHERE app_level = 'B1' OR app_level = 'B2' OR app_level = 'A1' OR app_level = 'A2'", function(error, results, fields) {
         // Check for error
         if (error) throw error;
         // Check for results
@@ -29,7 +29,38 @@ function getMidnighters() {
             console.log("No midnight-reset-apps found");
         }
         midnight_apps = JSON.parse(JSON.stringify(results));
+        callback(midnight_apps);
     });
 }
 
-getMidnighters();
+function resetMidnighters() {
+    getMidnighters((apps) => {
+        var tokens_refilled = 0;
+        apps.forEach(element => {
+            switch (element.app_level) {
+                case "B1":
+                    var tokens_refill = 5000;
+                    var tokens_needed = tokens_refill - element.tokens;
+                    break;
+                case "B2":
+                    var tokens_refill = 50000;
+                    var tokens_needed = tokens_refill - element.tokens;
+                    break;
+                case "A1":
+                    var tokens_refill = 100000;
+                    var tokens_needed = tokens_refill - element.tokens;
+                    break;
+                case "A2":
+                    var tokens_refill = 500000;
+                    var tokens_needed = tokens_refill - element.tokens;
+                    break;
+            }
+            if (tokens_needed < 0) {
+                tokens_needed = 0;
+            }
+            tokens_refilled += tokens_needed;
+        });
+    });
+}
+
+resetMidnighters()
