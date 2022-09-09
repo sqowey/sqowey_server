@@ -105,5 +105,28 @@ function resetHourResetters() {
                 conn.query("UPDATE apps SET tokens = " + tokens_refill + " WHERE app_id = '" + element.app_id + "'");
             }
         });
+        console.log("Refilled hour Tokens (" + tokens_refilled + " Tokens)");
+        planHourly();
     });
+}
+
+function planHourly() {
+    // Get the current date
+    const currentDate = new Date;
+    // Get minute and second
+    const minute = currentDate.getMinutes();
+    const second = currentDate.getSeconds();
+    // Calculate Timeout
+    const minuteTimeout = 59 - minute;
+    const secondTimeout = 60 - second;
+    // Re-calculate into seconds
+    const minuteTimeoutInSeconds = minuteTimeout * 60;
+    const fullTimeout = minuteTimeoutInSeconds + secondTimeout;
+    // Set the timeout
+    setTimeout(() => {
+        console.log("STARTING HOUR TOKEN RESET");
+        resetHourResetters();
+    }, fullTimeout * 1000);
+    // Log
+    console.log("Planned Hour Token reset (In: " + fullTimeout + "s)");
 }
