@@ -297,10 +297,8 @@ API.post("/applications/", (req, res) => {
                 api_log.writeLog("POST", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
                 return;
             }
-            console.log("YEH");
-            console.log(allowed_apps);
-            console.log(results.length);
-
+            // Generate the app secret
+            const generated_app_secret = generate.app_secret();
         });
     });
 });
