@@ -37,7 +37,10 @@
                 "tokenChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
             },
             "applications": {
-                "tokenChars": "abcdef1234567890"
+                "tokenChars": "abcdef1234567890",
+                "app_secret": {
+                    "chars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                }
             }
         },
         "endpoint_cost": {

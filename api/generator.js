@@ -51,7 +51,22 @@ function newAppID(callback) {
     });
 }
 
+function newAppSecret() {
+    // Create new app scret
+    var app_secret = "";
+    // Loop 64 times
+    for (let i = 1; i < config.api.verification.length_limits.app_secret; i++) {
+        // Generate a new random character
+        const new_char = config.api.endpointSettings.applications.app_secret.chars.charAt(Math.floor(Math.random() * config.api.endpointSettings.applications.app_secret.chars.length));
+        // Add the newly generated char to the full string
+        app_secret += new_char;
+    }
+    // Return the string
+    return app_secret;
+}
+
 module.exports = {
     auth_token: newAuthToken,
-    app_id: newAppID
+    app_id: newAppID,
+    app_secret: newAppSecret
 }
