@@ -131,4 +131,29 @@ function planHourly() {
     console.log("Planned Hour Token reset (In: " + fullTimeout + "s)");
 }
 
+function planDaily() {
+    // Get the current date
+    const currentDate = new Date;
+    // Get hour, minute and second
+    const hour = currentDate.getHours();
+    const minute = currentDate.getMinutes();
+    const second = currentDate.getSeconds();
+    // Calculate Timeout
+    const hourTimeout = 23 - hour;
+    const minuteTimeout = 59 - minute;
+    const secondTimeout = 60 - second;
+    // Re-calculate into seconds
+    const hourTimeoutInSeconds = hourTimeout * 60 * 60;
+    const minuteTimeoutInSeconds = minuteTimeout * 60;
+    const fullTimeout = hourTimeoutInSeconds + minuteTimeoutInSeconds + secondTimeout;
+    // Set the timeout
+    setTimeout(() => {
+        console.log("STARTING DAILY TOKEN RESET");
+        resetMidnighters();
+    }, fullTimeout * 1000);
+    // Log
+    console.log("Planned Daily Token reset (In: " + fullTimeout + "s)");
+}
+
+
 planHourly();
