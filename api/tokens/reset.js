@@ -157,3 +157,4 @@ function planDaily() {
 
 
 planHourly();
+planDaily();
