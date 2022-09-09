@@ -76,7 +76,7 @@ function verify_app_name(app_name = "") {
         return false;
     }
     // Check if chars match
-    if (!app_name.match(/^([a-zA-Z0-9]){3-12}$/)) {
+    if (!app_name.match(/^([a-zA-Z0-9]){3,12}$/)) {
         return false;
     }
     return true;
