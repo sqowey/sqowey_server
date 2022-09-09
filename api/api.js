@@ -238,8 +238,10 @@ API.post("/applications/", (req, res) => {
         api_log.writeLog("POST", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
         return;
     }
-    // Check if authorization is right
-    devportal_db_connection.query("SELECT dev_secret FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+    // Create a dev level var
+    var dev_lvl;
+    // Check if authorization is right (and get dev level)
+    devportal_db_connection.query("SELECT dev_secret, dev_level FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
         // Check if there is an error
         if (error) throw error;
         // Check if dev has been found
@@ -256,9 +258,50 @@ API.post("/applications/", (req, res) => {
             api_log.writeLog("POST", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
             return;
         }
+        // Save dev level
+        dev_lvl = results[0].dev_level;
     });
     // Generate a new app id
     generate.app_id((app_id) => {
+        // Check if the user has apps left
+        switch (dev_lvl) {
+            case 1:
+                var allowed_apps = 5;
+                break;
+            case 2:
+                var allowed_apps = 20;
+                break;
+            case 3:
+                var allowed_apps = 50;
+                break;
+            case 4:
+                var allowed_apps = 100;
+                break;
+            case 5:
+                var allowed_apps = 1000;
+                break;
+            case 6:
+                var allowed_apps = 5000;
+                break;
+            case 9:
+                var allowed_apps = 10000;
+                break;
+        }
+        devportal_db_connection.query("SELECT * FROM apps WHERE dev_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+            // Check if there is an error
+            if (error) throw error;
+            // Check if apps are used up
+            if (allowed_apps <= results.length) {
+                console.log("MEH");
+                console.log(allowed_apps);
+                console.log(results.length);
+                return;
+            }
+            console.log("YEH");
+            console.log(allowed_apps);
+            console.log(results.length);
+
+        });
     });
 });
 
