@@ -130,3 +130,5 @@ function planHourly() {
     // Log
     console.log("Planned Hour Token reset (In: " + fullTimeout + "s)");
 }
+
+planHourly();
