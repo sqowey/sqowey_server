@@ -105,6 +105,5 @@ function resetHourResetters() {
                 conn.query("UPDATE apps SET tokens = " + tokens_refill + " WHERE app_id = '" + element.app_id + "'");
             }
         });
-        console.log("Refilled:" + tokens_refilled);
     });
 }
