@@ -59,6 +59,9 @@ function resetMidnighters() {
                 tokens_needed = 0;
             }
             tokens_refilled += tokens_needed;
+            if (tokens_needed != 0) {
+                conn.query("UPDATE apps SET tokens = " + tokens_refill + " WHERE app_id = '" + element.app_id + "'");
+            }
         });
     });
 }
