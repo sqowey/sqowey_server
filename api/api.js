@@ -292,9 +292,9 @@ API.post("/applications/", (req, res) => {
             if (error) throw error;
             // Check if apps are used up
             if (allowed_apps <= results.length) {
-                console.log("MEH");
-                console.log(allowed_apps);
-                console.log(results.length);
+                res.status(403);
+                res.json(config.api.messages.error.noMoreApps);
+                api_log.writeLog("POST", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
                 return;
             }
             console.log("YEH");
