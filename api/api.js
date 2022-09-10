@@ -354,6 +354,17 @@ API.patch("/applications/", (req, res) => {
             api_log.writeLog("PATCH", "/AUTH/", 429, { "app_id": requestbody.app_id });
             return;
         }
+        // Loop through the requested changes
+        const requested_changes = requestbody.changes;
+        requested_changes.forEach(req_change => {
+            // Check if multiple changes have been requested in one request
+            if (Object.keys(req_change).length != 1) {
+                res.status(400);
+                res.json(config.api.messages.error.badRequest);
+                api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requested_changes });
+                return;
+            };
+        });
     });
 });
 
