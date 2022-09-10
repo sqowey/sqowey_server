@@ -17,7 +17,7 @@ function newAuthToken() {
     // Create new auth token
     var auth_token = "";
     // Loop 48 times
-    for (let i = 1; i < 48; i++) {
+    for (let i = 0; i < 48; i++) {
         // Generate a new random character
         const new_char = config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
         // Add the newly generated char to the full string
@@ -31,7 +31,7 @@ function newAppID(callback) {
     // Create new auth token
     var new_app_id = "";
     // Loop
-    for (let i = 1; i < config.api.verification.length_limits.app_id; i++) {
+    for (let i = 0; i < config.api.verification.length_limits.app_id; i++) {
         // Generate a new random character
         const new_char = config.api.endpointSettings.applications.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.applications.tokenChars.length));
         // Add the newly generated char to the full string
@@ -55,7 +55,7 @@ function newAppSecret() {
     // Create new app scret
     var app_secret = "";
     // Loop 64 times
-    for (let i = 1; i < config.api.verification.length_limits.app_secret; i++) {
+    for (let i = 0; i < config.api.verification.length_limits.app_secret; i++) {
         // Generate a new random character
         const new_char = config.api.endpointSettings.applications.app_secret.chars.charAt(Math.floor(Math.random() * config.api.endpointSettings.applications.app_secret.chars.length));
         // Add the newly generated char to the full string
