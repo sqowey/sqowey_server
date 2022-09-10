@@ -4,9 +4,9 @@ var hourResets = "";
 function initLogFiles() {
     // Create all folders/files if they dont exist
     if (!fs.existsSync("./logs")) fs.mkdirSync("./logs");
-    if (!fs.existsSync("./logs/hourResets.md")) fs.writeFileSync("./logs/hourResets.md", "[]");
+    if (!fs.existsSync("./logs/hourResets.json")) fs.writeFileSync("./logs/hourResets.json", "[]");
     // Load the reset log files
-    hourResets = JSON.parse(fs.readFileSync("./logs/hourResets.md"));
+    hourResets = JSON.parse(fs.readFileSync("./logs/hourResets.json"));
 }
 
 function hourFinished(tokens) {
@@ -18,7 +18,7 @@ function hourFinished(tokens) {
     // Add the message to the hourResets-file-var
     hourResets.push(message);
     // Write file
-    fs.writeFileSync("./logs/hourResets.md", JSON.stringify(hourResets, null, 4));
+    fs.writeFileSync("./logs/hourResets.json", JSON.stringify(hourResets, null, 4));
 }
 
 module.exports = {
