@@ -366,6 +366,8 @@ API.patch("/applications/", (req, res) => {
             }
             // Reduce the tokens
             tokens.reduce(config.api.endpoint_cost.applications.patch, requestbody.app_id);
+            // Get the change
+            const change = Object.keys(req_change)[0];
         });
     });
 });
