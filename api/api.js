@@ -380,8 +380,12 @@ API.patch("/applications/", (req, res) => {
                         return;
                     }
                     devportal_db_connection.query("UPDATE apps SET app_name='" + change_value + "'");
-
                     break;
+                default:
+                    res.status(400);
+                    res.json(config.api.messages.error.badRequest);
+                    api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "change_key": change_key, "change_value": change_value });
+                    return;
             }
         });
     });
