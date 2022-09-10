@@ -346,6 +346,15 @@ API.patch("/applications/", (req, res) => {
         api_log.writeLog("PATCH", "/AUTH/", 400, { "dev_id": requestbody.dev_id });
         return;
     }
+    // Check if there are enough tokens left
+    tokens.check(requestbody.app_id, requestbody.changes.length * config.api.endpoint_cost.applications.patch, (cb) => {
+        if (!cb) {
+            res.status(429);
+            res.json(config.api.messages.error.limit_reached);
+            api_log.writeLog("PATCH", "/AUTH/", 429, { "app_id": requestbody.app_id });
+            return;
+        }
+    });
 });
 
 
