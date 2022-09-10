@@ -327,10 +327,10 @@ API.patch("/applications/", (req, res) => {
     const requestbody = req.body;
     const requestheaders = req.headers;
     // Check body
-    if (!requestbody.app_name || !requestbody.dev_id || !requestbody.changes) {
+    if (!requestbody.app_id || !requestbody.dev_id || !requestbody.changes) {
         res.status(400);
         res.json(config.api.messages.error.badRequest);
-        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
         return;
     }
 });
