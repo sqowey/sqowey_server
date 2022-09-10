@@ -31,7 +31,7 @@ function writeLog(method, endpoint, statuscode, log_data) {
     // Add logdata
     writeString += log_data;
     // Write to file
-    fs.appendFile("./log.md", writeString, (err) => {});
+    fs.appendFile("./logs/api.md", writeString, (err) => {});
 }
 
 module.exports = {
