@@ -6,7 +6,7 @@
     "scripts": {
         "api": "node ./api/api.js",
         "tokens": "node ./api/tokens/reset.js",
-        "ndmn_tokens": "nodemon ./api/tokens/reset.js"
+        "ndmn_tokens": "nodemon -i ./logs ./api/tokens/reset.js"
     },
     "repository": {
         "type": "git",
