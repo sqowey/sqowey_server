@@ -322,6 +322,80 @@ API.post("/applications/", (req, res) => {
         });
     });
 });
+API.patch("/applications/", (req, res) => {
+    // Get the body
+    const requestbody = req.body;
+    const requestheaders = req.headers;
+    // Check body
+    if (!requestbody.app_id || !requestbody.dev_id || !requestbody.changes) {
+        res.status(400);
+        res.json(config.api.messages.error.badRequest);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
+        return;
+    }
+    // Verify the app id and the dev id
+    if (!verify.app_id(requestbody.app_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyAppId);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
+        return;
+    }
+    if (!verify.user_id(requestbody.dev_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyDevId);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if there are enough tokens left
+    tokens.check(requestbody.app_id, requestbody.changes.length * config.api.endpoint_cost.applications.patch, (cb) => {
+        if (!cb) {
+            res.status(429);
+            res.json(config.api.messages.error.limit_reached);
+            api_log.writeLog("PATCH", "/APPLICATIONS/", 429, { "app_id": requestbody.app_id });
+            return;
+        }
+        // Loop through the requested changes
+        const requested_changes = requestbody.changes;
+        requested_changes.forEach(req_change => {
+            // Check if multiple changes have been requested in one request
+            if (Object.keys(req_change).length != 1) {
+                res.status(400);
+                res.json(config.api.messages.error.badRequest);
+                api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requested_changes });
+                return;
+            }
+            // Reduce the tokens
+            tokens.reduce(config.api.endpoint_cost.applications.patch, requestbody.app_id);
+            // Get the change
+            const change_key = Object.keys(req_change)[0];
+            const change_value = req_change[change_key];
+            // Switch the change
+            // And set up the sql query
+            switch (change_key) {
+                case "app_name":
+                    if (!verify.app_name(change_value)) {
+                        res.status(400);
+                        res.json(config.api.messages.error.unableVerifyAppName);
+                        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": change_value });
+                        return;
+                    }
+                    devportal_db_connection.query("UPDATE apps SET app_name='" + change_value + "'");
+                    break;
+                default:
+                    res.status(400);
+                    res.json(config.api.messages.error.badRequest);
+                    api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "change_key": change_key, "change_value": change_value });
+                    return;
+            }
+            // Check if last loop
+            if (req_change = requested_changes[requested_changes.length - 1]) {
+                res.status(200);
+                res.json(config.api.messages.sucess.ok);
+                api_log.writeLog("PATCH", "/APPLICATIONS/", 200, config.api.messages.sucess.ok);
+            }
+        });
+    });
+});
 
 
 
