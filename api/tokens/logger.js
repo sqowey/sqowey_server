@@ -18,7 +18,7 @@ function hourFinished(tokens) {
     // Add the message to the hourResets-file-var
     hourResets.push(message);
     // Write file
-    fs.writeFileSync("./logs/hourResets.md", JSON.stringify(hourResets, null, "4"));
+    fs.writeFileSync("./logs/hourResets.md", JSON.stringify(hourResets, null, 4));
 }
 
 module.exports = {
