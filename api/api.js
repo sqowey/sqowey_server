@@ -337,13 +337,13 @@ API.patch("/applications/", (req, res) => {
     if (!verify.app_id(requestbody.app_id)) {
         res.status(400);
         res.json(config.api.messages.error.unableVerifyAppId);
-        api_log.writeLog("PATCH", "/AUTH/", 400, { "app_id": requestbody.app_id });
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
         return;
     }
     if (!verify.user_id(requestbody.dev_id)) {
         res.status(400);
         res.json(config.api.messages.error.unableVerifyDevId);
-        api_log.writeLog("PATCH", "/AUTH/", 400, { "dev_id": requestbody.dev_id });
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
         return;
     }
     // Check if there are enough tokens left
@@ -351,7 +351,7 @@ API.patch("/applications/", (req, res) => {
         if (!cb) {
             res.status(429);
             res.json(config.api.messages.error.limit_reached);
-            api_log.writeLog("PATCH", "/AUTH/", 429, { "app_id": requestbody.app_id });
+            api_log.writeLog("PATCH", "/APPLICATIONS/", 429, { "app_id": requestbody.app_id });
             return;
         }
         // Loop through the requested changes
