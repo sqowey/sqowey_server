@@ -5,8 +5,10 @@ function initLogFiles() {
     // Create all folders/files if they dont exist
     if (!fs.existsSync("./logs")) fs.mkdirSync("./logs");
     if (!fs.existsSync("./logs/hourResets.json")) fs.writeFileSync("./logs/hourResets.json", "[]");
+    if (!fs.existsSync("./logs/dailyResets.json")) fs.writeFileSync("./logs/dailyResets.json", "[]");
     // Load the reset log files
     hourResets = JSON.parse(fs.readFileSync("./logs/hourResets.json"));
+    dailyResets = JSON.parse(fs.readFileSync("./logs/dailyResets.json"));
 }
 
 function hourFinished(tokens) {
