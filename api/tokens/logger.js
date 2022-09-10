@@ -42,4 +42,3 @@ module.exports = {
 }
 
 initLogFiles();
-hourFinished(1);
