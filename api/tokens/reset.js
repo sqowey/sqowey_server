@@ -65,6 +65,9 @@ function resetMidnighters() {
                 conn.query("UPDATE apps SET tokens = " + tokens_refill + " WHERE app_id = '" + element.app_id + "'");
             }
         });
+        console.log("Refilled daily Tokens (" + tokens_refilled + " Tokens)");
+        log.dayFinished(tokens_refilled);
+        planDaily();
     });
 }
 
