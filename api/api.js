@@ -340,7 +340,7 @@ API.patch("/applications/", (req, res) => {
         api_log.writeLog("PATCH", "/AUTH/", 400, { "app_id": requestbody.app_id });
         return;
     }
-    if (!verify.dev_id(requestbody.dev_id)) {
+    if (!verify.user_id(requestbody.dev_id)) {
         res.status(400);
         res.json(config.api.messages.error.unableVerifyDevId);
         api_log.writeLog("PATCH", "/AUTH/", 400, { "dev_id": requestbody.dev_id });
