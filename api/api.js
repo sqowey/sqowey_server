@@ -379,6 +379,7 @@ API.patch("/applications/", (req, res) => {
                         api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": change_value });
                         return;
                     }
+                    devportal_db_connection.query("UPDATE apps SET app_name='" + change_value + "'");
 
                     break;
             }
