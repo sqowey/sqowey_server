@@ -330,7 +330,7 @@ API.patch("/applications/", (req, res) => {
     if (!requestbody.app_name || !requestbody.dev_id) {
         res.status(400);
         res.json(config.api.messages.error.badRequest);
-        api_log.writeLog("POST", "/APPLICATIONS/", 400, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
         return;
     }
 });
