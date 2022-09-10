@@ -5,12 +5,14 @@
                 "connect": {
                     "main": "Main Mysql-connection running as Thread: ",
                     "tokenActions": "Token reducing Mysql-connection running as Thread: ",
+                    "generator": "Generator-Mysql-connection running as Thread: ",
                     "authorization": "Authorization Mysql-connection running as Thread: ",
                     "token_reset": "Token resetting Mysql-connection running as Thread: "
                 },
                 "error": {
                     "main": "Error on trying to connect the Main-Mysql-connection : ",
                     "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
+                    "generator": "Error on trying to connect the Generator-Mysql-connection : ",
                     "authorization": "Error on trying to connect the Authorization-Mysql-connection : ",
                     "token_reset": "Error on trying to connect the Token-Reset-Mysql-connection : "
                 }
@@ -35,6 +37,12 @@
         "endpointSettings": {
             "auth": {
                 "tokenChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+            },
+            "applications": {
+                "tokenChars": "abcdef1234567890",
+                "app_secret": {
+                    "chars": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                }
             }
         },
         "endpoint_cost": {
@@ -84,6 +92,9 @@
                 "unableVerifyAppSecret": { "error": "Unable to verify app Secret", "details": "The used app secret is not formatted as it should be! Please check your code!" },
                 "unableVerifyAppName": { "error": "Invalid app name", "details": "The sent app name can't be used! Please check your code and the Documentation!" },
                 "limit_reached": { "error": "Too Many Requests", "details": "You reached your token limit! Please check the devportal!" }
+            },
+            "sucess": {
+                "ok": { "status": "OK" }
             }
         },
         "verification": {
@@ -91,7 +102,8 @@
                 "app_id": 12,
                 "user_id": 36,
                 "server_id": 8,
-                "app_secret": 64
+                "app_secret": 64,
+                "auth_token": 48
             }
         }
     }

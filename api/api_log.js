@@ -1,8 +1,9 @@
 const fs = require("fs");
 
 function initLogFile() {
-    if (!fs.existsSync("./log.md")) {
-        fs.writeFileSync("./log.md", "Date | Time | Statuscode | Endpoint | Method | Data\n-|-|-|-|-|-")
+    if (!fs.existsSync("./logs")) fs.mkdirSync("./logs");
+    if (!fs.existsSync("./logs/api.md")) {
+        fs.writeFileSync("./logs/api.md", "Date | Time | Statuscode | Endpoint | Method | Data\n-|-|-|-|-|-")
     }
 }
 
@@ -30,7 +31,7 @@ function writeLog(method, endpoint, statuscode, log_data) {
     // Add logdata
     writeString += log_data;
     // Write to file
-    fs.appendFile("./log.md", writeString, (err) => {});
+    fs.appendFile("./logs/api.md", writeString, (err) => {});
 }
 
 module.exports = {

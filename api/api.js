@@ -8,6 +8,8 @@ const api_log = require("./api_log.js");
 const authorize = require("./authorize.js");
 // Get the tokenActions module
 const tokens = require("./tokenActions.js");
+// Get the generator module
+const generate = require("./generator.js");
 // Get the verification module
 const verify = require("./verify.js");
 // Get the configuration file
@@ -85,11 +87,8 @@ API.post("/auth/", (req, res) => {
                 tokens.reduce(config.api.endpoint_cost.auth.post, requestbody.app_id);
                 // Delete old auth token entry
                 devportal_db_connection.query("DELETE FROM authentification WHERE app_id = '" + requestbody.app_id + "'");
-                // Create new auth token
-                var auth_token = "";
-                for (let i = 1; i < 48; i++) {
-                    auth_token += config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
-                }
+                // Generate a new auth token
+                const auth_token = generate.auth_token();
                 // Insert the auth token
                 devportal_db_connection.query("INSERT INTO authentification (app_id, auth_token) VALUES ('" + requestbody.app_id + "', '" + auth_token + "')");
                 // Respond with auth token
@@ -239,8 +238,10 @@ API.post("/applications/", (req, res) => {
         api_log.writeLog("POST", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
         return;
     }
-    // Check if authorization is right
-    devportal_db_connection.query("SELECT dev_secret FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+    // Create a dev level var
+    var dev_lvl;
+    // Check if authorization is right (and get dev level)
+    devportal_db_connection.query("SELECT dev_secret, dev_level FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
         // Check if there is an error
         if (error) throw error;
         // Check if dev has been found
@@ -257,6 +258,142 @@ API.post("/applications/", (req, res) => {
             api_log.writeLog("POST", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
             return;
         }
+        // Save dev level
+        dev_lvl = results[0].dev_level;
+    });
+    // Generate a new app id
+    generate.app_id((app_id) => {
+        // Check if the user has apps left
+        switch (dev_lvl) {
+            case 1:
+                var allowed_apps = 5;
+                break;
+            case 2:
+                var allowed_apps = 20;
+                break;
+            case 3:
+                var allowed_apps = 50;
+                break;
+            case 4:
+                var allowed_apps = 100;
+                break;
+            case 5:
+                var allowed_apps = 1000;
+                break;
+            case 6:
+                var allowed_apps = 5000;
+                break;
+            case 9:
+                var allowed_apps = 10000;
+                break;
+        }
+        devportal_db_connection.query("SELECT * FROM apps WHERE dev_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+            // Check if there is an error
+            if (error) throw error;
+            // Check if apps are used up
+            if (allowed_apps <= results.length) {
+                res.status(403);
+                res.json(config.api.messages.error.noMoreApps);
+                api_log.writeLog("POST", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
+                return;
+            }
+            // Generate the app secret
+            const generated_app_secret = generate.app_secret();
+            // Create the application
+            devportal_db_connection.query("INSERT INTO apps (dev_id, app_id, app_level, tokens, app_name, app_secret) VALUES ('" + requestbody.dev_id + "', '" + app_id + "', 'B2', 75000, '" + requestbody.app_name + "', '" + generated_app_secret + "')", (error, results, fields) => {
+                // Check if there is an error
+                if (error) throw error;
+                // Build the response json
+                const response = {
+                    "authentication": {
+                        "app_secret": generated_app_secret
+                    },
+                    "app_name": requestbody.app_name,
+                    "app_id": app_id,
+                    "app_level": "B2",
+                    "tokens_left": 75000
+                };
+                // Send response
+                res.status(201);
+                res.json(response);
+                // Log
+                api_log.writeLog("POST", "/APPLICATIONS/", 201, response);
+            });
+        });
+    });
+});
+API.patch("/applications/", (req, res) => {
+    // Get the body
+    const requestbody = req.body;
+    const requestheaders = req.headers;
+    // Check body
+    if (!requestbody.app_id || !requestbody.dev_id || !requestbody.changes) {
+        res.status(400);
+        res.json(config.api.messages.error.badRequest);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
+        return;
+    }
+    // Verify the app id and the dev id
+    if (!verify.app_id(requestbody.app_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyAppId);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
+        return;
+    }
+    if (!verify.user_id(requestbody.dev_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyDevId);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if there are enough tokens left
+    tokens.check(requestbody.app_id, requestbody.changes.length * config.api.endpoint_cost.applications.patch, (cb) => {
+        if (!cb) {
+            res.status(429);
+            res.json(config.api.messages.error.limit_reached);
+            api_log.writeLog("PATCH", "/APPLICATIONS/", 429, { "app_id": requestbody.app_id });
+            return;
+        }
+        // Loop through the requested changes
+        const requested_changes = requestbody.changes;
+        requested_changes.forEach(req_change => {
+            // Check if multiple changes have been requested in one request
+            if (Object.keys(req_change).length != 1) {
+                res.status(400);
+                res.json(config.api.messages.error.badRequest);
+                api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requested_changes });
+                return;
+            }
+            // Reduce the tokens
+            tokens.reduce(config.api.endpoint_cost.applications.patch, requestbody.app_id);
+            // Get the change
+            const change_key = Object.keys(req_change)[0];
+            const change_value = req_change[change_key];
+            // Switch the change
+            // And set up the sql query
+            switch (change_key) {
+                case "app_name":
+                    if (!verify.app_name(change_value)) {
+                        res.status(400);
+                        res.json(config.api.messages.error.unableVerifyAppName);
+                        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": change_value });
+                        return;
+                    }
+                    devportal_db_connection.query("UPDATE apps SET app_name='" + change_value + "'");
+                    break;
+                default:
+                    res.status(400);
+                    res.json(config.api.messages.error.badRequest);
+                    api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "change_key": change_key, "change_value": change_value });
+                    return;
+            }
+            // Check if last loop
+            if (req_change = requested_changes[requested_changes.length - 1]) {
+                res.status(200);
+                res.json(config.api.messages.sucess.ok);
+                api_log.writeLog("PATCH", "/APPLICATIONS/", 200, config.api.messages.sucess.ok);
+            }
+        });
     });
 });
 

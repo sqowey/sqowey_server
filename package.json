@@ -5,6 +5,7 @@
     "main": "./api/api.js",
     "scripts": {
         "api": "node ./api/api.js",
+        "ndmn_api": "nodemon ./api/api.js",
         "tokens": "node ./api/tokens/reset.js",
         "ndmn_tokens": "nodemon -i ./logs ./api/tokens/reset.js"
     },
