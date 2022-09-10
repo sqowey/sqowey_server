@@ -367,10 +367,11 @@ API.patch("/applications/", (req, res) => {
             // Reduce the tokens
             tokens.reduce(config.api.endpoint_cost.applications.patch, requestbody.app_id);
             // Get the change
-            const change = Object.keys(req_change)[0];
+            const change_key = Object.keys(req_change)[0];
+            const change_value = req_change[change_key];
             // Switch the change
             // And set up the sql query
-            switch (change) {
+            switch (change_key) {
                 default: break;
             }
         });
