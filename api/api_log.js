@@ -1,8 +1,9 @@
 const fs = require("fs");
 
 function initLogFile() {
-    if (!fs.existsSync("./log.md")) {
-        fs.writeFileSync("./log.md", "Date | Time | Statuscode | Endpoint | Method | Data\n-|-|-|-|-|-")
+    if (!fs.existsSync("./logs")) fs.mkdirSync("./logs");
+    if (!fs.existsSync("./logs/api.md")) {
+        fs.writeFileSync("./logs/api.md", "Date | Time | Statuscode | Endpoint | Method | Data\n-|-|-|-|-|-")
     }
 }
 
