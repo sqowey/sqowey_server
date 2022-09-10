@@ -108,6 +108,7 @@ function resetHourResetters() {
             }
         });
         console.log("Refilled hour Tokens (" + tokens_refilled + " Tokens)");
+        log.hourFinished(tokens_refilled);
         planHourly();
     });
 }
