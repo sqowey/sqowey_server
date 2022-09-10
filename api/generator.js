@@ -16,7 +16,7 @@ db_conn.connect(function(err) {
 function newAuthToken() {
     // Create new auth token
     var auth_token = "";
-    // Loop 48 times
+    // Loop
     for (let i = 0; i < config.api.verification.length_limits.auth_token; i++) {
         // Generate a new random character
         const new_char = config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
@@ -54,7 +54,7 @@ function newAppID(callback) {
 function newAppSecret() {
     // Create new app scret
     var app_secret = "";
-    // Loop 64 times
+    // Loop
     for (let i = 0; i < config.api.verification.length_limits.app_secret; i++) {
         // Generate a new random character
         const new_char = config.api.endpointSettings.applications.app_secret.chars.charAt(Math.floor(Math.random() * config.api.endpointSettings.applications.app_secret.chars.length));
