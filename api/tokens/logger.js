@@ -23,9 +23,22 @@ function hourFinished(tokens) {
     fs.writeFileSync("./logs/hourResets.json", JSON.stringify(hourResets, null, 4));
 }
 
+function dayFinished(tokens) {
+    // Create the timestamp
+    const currentDate = new Date;
+    const timeISO = currentDate.toISOString();
+    // Create the message
+    const message = { "timestamp": timeISO, "tokens_reset": tokens };
+    // Add the message to the dailyResets-file-var
+    dailyResets.push(message);
+    // Write file
+    fs.writeFileSync("./logs/dailyResets.json", JSON.stringify(dailyResets, null, 4));
+}
+
 module.exports = {
     init: initLogFiles,
-    hourFinished: hourFinished
+    hourFinished: hourFinished,
+    dayFinished: dayFinished
 }
 
 initLogFiles();
