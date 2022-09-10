@@ -376,7 +376,7 @@ API.patch("/applications/", (req, res) => {
                     if (!verify.app_name(change_value)) {
                         res.status(400);
                         res.json(config.api.messages.error.unableVerifyAppName);
-                        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": requestbody.app_name });
+                        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": change_value });
                         return;
                     }
 
