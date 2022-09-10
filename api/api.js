@@ -363,7 +363,9 @@ API.patch("/applications/", (req, res) => {
                 res.json(config.api.messages.error.badRequest);
                 api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requested_changes });
                 return;
-            };
+            }
+            // Reduce the tokens
+            tokens.reduce(config.api.endpoint_cost.applications.patch, requestbody.app_id);
         });
     });
 });
