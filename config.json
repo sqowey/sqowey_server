@@ -97,7 +97,8 @@
                 "app_id": 12,
                 "user_id": 36,
                 "server_id": 8,
-                "app_secret": 64
+                "app_secret": 64,
+                "auth_token": 48
             }
         }
     }

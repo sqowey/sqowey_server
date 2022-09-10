@@ -17,7 +17,7 @@ function newAuthToken() {
     // Create new auth token
     var auth_token = "";
     // Loop 48 times
-    for (let i = 0; i < 48; i++) {
+    for (let i = 0; i < config.api.verification.length_limits.auth_token; i++) {
         // Generate a new random character
         const new_char = config.api.endpointSettings.auth.tokenChars.charAt(Math.floor(Math.random() * config.api.endpointSettings.auth.tokenChars.length));
         // Add the newly generated char to the full string
