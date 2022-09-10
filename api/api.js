@@ -372,7 +372,15 @@ API.patch("/applications/", (req, res) => {
             // Switch the change
             // And set up the sql query
             switch (change_key) {
-                default: break;
+                case "app_name":
+                    if (!verify.app_name(change_value)) {
+                        res.status(400);
+                        res.json(config.api.messages.error.unableVerifyAppName);
+                        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_name": requestbody.app_name });
+                        return;
+                    }
+
+                    break;
             }
         });
     });
