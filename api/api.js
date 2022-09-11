@@ -430,27 +430,27 @@ API.delete("/applications/", (req, res) => {
     if (!requestbody.app_id || !requestbody.dev_id) {
         res.status(400);
         res.json(config.api.messages.error.badRequest);
-        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
         return;
     }
     // Verify the app id and the dev id
     if (!verify.app_id(requestbody.app_id)) {
         res.status(400);
         res.json(config.api.messages.error.unableVerifyAppId);
-        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
         return;
     }
     if (!verify.user_id(requestbody.dev_id)) {
         res.status(400);
         res.json(config.api.messages.error.unableVerifyDevId);
-        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
         return;
     }
     // Check authorization
     if (!requestheaders.authorization) {
         res.status(401);
         res.json(config.api.messages.error.badAuth);
-        api_log.writeLog("POST", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
         return;
     }
     // Check if authorization is right
@@ -461,14 +461,14 @@ API.delete("/applications/", (req, res) => {
         if (results == false) {
             res.status(400);
             res.json(config.api.messages.error.unknownDevId);
-            api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
             return;
         }
         // Check if secret matches request secret
         if (results[0].dev_secret != requestheaders.authorization.replace("Dev ", "")) {
             res.status(401);
             res.json(config.api.messages.error.badDevSecret);
-            api_log.writeLog("PATCH", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
             return;
         }
     });
@@ -480,14 +480,14 @@ API.delete("/applications/", (req, res) => {
         if (!results) {
             res.status(401);
             res.json(config.api.messages.error.unknownAppId);
-            api_log.writeLog("GET", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
             return;
         }
         // Check if api is authorized to change the app
         if (results[0].dev_id != requestbody.dev_id) {
             res.status(403);
             res.json(config.api.messages.error.badAppOwner);
-            api_log.writeLog("GET", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
             return;
         }
         // Delete the app
