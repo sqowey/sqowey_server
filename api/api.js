@@ -471,31 +471,31 @@ API.delete("/applications/", (req, res) => {
             api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
             return;
         }
-    });
-    // Check if app owner is right
-    devportal_db_connection.query("SELECT dev_id FROM apps WHERE app_id = '" + requestbody.app_id + "'", (error, results, fields) => {
-        // Check if there is an error
-        if (error) throw error;
-        // Check if app exists
-        if (!results) {
-            res.status(401);
-            res.json(config.api.messages.error.unknownAppId);
-            api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
-            return;
-        }
-        // Check if api is authorized to change the app
-        if (results[0].dev_id != requestbody.dev_id) {
-            res.status(403);
-            res.json(config.api.messages.error.badAppOwner);
-            api_log.writeLog("DELETE", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
-            return;
-        }
-        // Delete the app
-        devportal_db_connection.query("DELETE FROM apps WHERE app_id = '" + requestbody.app_id + "'");
-        // Response
-        res.status(200);
-        res.json(config.api.messages.sucess.ok);
-        api_log.writeLog("DELETE", "/APPLICATIONS/", 200, config.api.messages.sucess.ok);
+        // Check if app owner is right
+        devportal_db_connection.query("SELECT dev_id FROM apps WHERE app_id = '" + requestbody.app_id + "'", (error, results, fields) => {
+            // Check if there is an error
+            if (error) throw error;
+            // Check if app exists
+            if (!results) {
+                res.status(401);
+                res.json(config.api.messages.error.unknownAppId);
+                api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
+                return;
+            }
+            // Check if api is authorized to change the app
+            if (results[0].dev_id != requestbody.dev_id) {
+                res.status(403);
+                res.json(config.api.messages.error.badAppOwner);
+                api_log.writeLog("DELETE", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
+                return;
+            }
+            // Delete the app
+            devportal_db_connection.query("DELETE FROM apps WHERE app_id = '" + requestbody.app_id + "'");
+            // Response
+            res.status(200);
+            res.json(config.api.messages.sucess.ok);
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 200, config.api.messages.sucess.ok);
+        });
     });
 });
 
