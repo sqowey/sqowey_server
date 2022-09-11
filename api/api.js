@@ -492,6 +492,10 @@ API.delete("/applications/", (req, res) => {
         }
         // Delete the app
         devportal_db_connection.query("DELETE FROM apps WHERE app_id = '" + requestbody.app_id + "'");
+        // Response
+        res.status(200);
+        res.json(config.api.messages.sucess.ok);
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 200, config.api.messages.sucess.ok);
     });
 });
 
