@@ -422,7 +422,31 @@ API.patch("/applications/", (req, res) => {
         });
     });
 });
-
+API.delete("/applications/", (req, res) => {
+    // Get the body
+    const requestbody = req.body;
+    const requestheaders = req.headers;
+    // Check body
+    if (!requestbody.app_id || !requestbody.dev_id) {
+        res.status(400);
+        res.json(config.api.messages.error.badRequest);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
+        return;
+    }
+    // Verify the app id and the dev id
+    if (!verify.app_id(requestbody.app_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyAppId);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
+        return;
+    }
+    if (!verify.user_id(requestbody.dev_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyDevId);
+        api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
+});
 
 
 // Run the servers
