@@ -446,6 +446,13 @@ API.delete("/applications/", (req, res) => {
         api_log.writeLog("PATCH", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
         return;
     }
+    // Check authorization
+    if (!requestheaders.authorization) {
+        res.status(401);
+        res.json(config.api.messages.error.badAuth);
+        api_log.writeLog("POST", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
+        return;
+    }
 });
 
 
