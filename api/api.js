@@ -297,13 +297,6 @@ API.post("/applications/", (req, res) => {
                 api_log.writeLog("POST", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
                 return;
             }
-            // Check if owner is authorized to change the app
-            if (results[0].dev_id != requestbody.dev_id) {
-                res.status(403);
-                res.json(config.api.messages.error.badAppOwner);
-                api_log.writeLog("GET", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
-                return;
-            }
             // Generate the app secret
             const generated_app_secret = generate.app_secret();
             // Create the application
@@ -505,6 +498,9 @@ API.delete("/applications/", (req, res) => {
         });
     });
 });
+// 
+// 
+// 
 
 
 // Run the servers
