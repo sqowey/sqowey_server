@@ -423,7 +423,85 @@ API.patch("/applications/", (req, res) => {
         });
     });
 });
-
+API.delete("/applications/", (req, res) => {
+    // Get the body
+    const requestbody = req.body;
+    const requestheaders = req.headers;
+    // Check body
+    if (!requestbody.app_id || !requestbody.dev_id) {
+        res.status(400);
+        res.json(config.api.messages.error.badRequest);
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id, "changes": requestbody.changes });
+        return;
+    }
+    // Verify the app id and the dev id
+    if (!verify.app_id(requestbody.app_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyAppId);
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "app_id": requestbody.app_id });
+        return;
+    }
+    if (!verify.user_id(requestbody.dev_id)) {
+        res.status(400);
+        res.json(config.api.messages.error.unableVerifyDevId);
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check authorization
+    if (!requestheaders.authorization) {
+        res.status(401);
+        res.json(config.api.messages.error.badAuth);
+        api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "app_name": requestbody.app_name, "dev_id": requestbody.dev_id });
+        return;
+    }
+    // Check if authorization is right
+    devportal_db_connection.query("SELECT dev_secret FROM developers WHERE user_id = '" + requestbody.dev_id + "'", (error, results, fields) => {
+        // Check if there is an error
+        if (error) throw error;
+        // Check if dev has been found
+        if (results == false) {
+            res.status(400);
+            res.json(config.api.messages.error.unknownDevId);
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 400, { "dev_id": requestbody.dev_id });
+            return;
+        }
+        // Check if secret matches request secret
+        if (results[0].dev_secret != requestheaders.authorization.replace("Dev ", "")) {
+            res.status(401);
+            res.json(config.api.messages.error.badDevSecret);
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "dev_id": requestbody.dev_id });
+            return;
+        }
+        // Check if app owner is right
+        devportal_db_connection.query("SELECT dev_id FROM apps WHERE app_id = '" + requestbody.app_id + "'", (error, results, fields) => {
+            // Check if there is an error
+            if (error) throw error;
+            // Check if app exists
+            if (!results) {
+                res.status(401);
+                res.json(config.api.messages.error.unknownAppId);
+                api_log.writeLog("DELETE", "/APPLICATIONS/", 401, { "app_id": requestbody.app_id });
+                return;
+            }
+            // Check if api is authorized to change the app
+            if (results[0].dev_id != requestbody.dev_id) {
+                res.status(403);
+                res.json(config.api.messages.error.badAppOwner);
+                api_log.writeLog("DELETE", "/APPLICATIONS/", 403, { "app_id": requestbody.app_id, "dev_id": requestbody.dev_id });
+                return;
+            }
+            // Delete the app
+            devportal_db_connection.query("DELETE FROM apps WHERE app_id = '" + requestbody.app_id + "'");
+            // Response
+            res.status(200);
+            res.json(config.api.messages.sucess.ok);
+            api_log.writeLog("DELETE", "/APPLICATIONS/", 200, config.api.messages.sucess.ok);
+        });
+    });
+});
+// 
+// 
+// 
 
 
 // Run the servers
