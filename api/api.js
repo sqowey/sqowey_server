@@ -296,29 +296,30 @@ API.post("/applications/", (req, res) => {
                 res.json(config.api.messages.error.noMoreApps);
                 api_log.writeLog("POST", "/APPLICATIONS/", 403, { "dev_id": requestbody.dev_id });
                 return;
+            } else {
+                // Generate the app secret
+                const generated_app_secret = generate.app_secret();
+                // Create the application
+                devportal_db_connection.query("INSERT INTO apps (dev_id, app_id, app_level, tokens, app_name, app_secret) VALUES ('" + requestbody.dev_id + "', '" + app_id + "', 'B2', 75000, '" + requestbody.app_name + "', '" + generated_app_secret + "')", (error, results, fields) => {
+                    // Check if there is an error
+                    if (error) throw error;
+                    // Build the response json
+                    const response = {
+                        "authentication": {
+                            "app_secret": generated_app_secret
+                        },
+                        "app_name": requestbody.app_name,
+                        "app_id": app_id,
+                        "app_level": "B2",
+                        "tokens_left": 75000
+                    };
+                    // Send response
+                    res.status(201);
+                    res.json(response);
+                    // Log
+                    api_log.writeLog("POST", "/APPLICATIONS/", 201, response);
+                });
             }
-            // Generate the app secret
-            const generated_app_secret = generate.app_secret();
-            // Create the application
-            devportal_db_connection.query("INSERT INTO apps (dev_id, app_id, app_level, tokens, app_name, app_secret) VALUES ('" + requestbody.dev_id + "', '" + app_id + "', 'B2', 75000, '" + requestbody.app_name + "', '" + generated_app_secret + "')", (error, results, fields) => {
-                // Check if there is an error
-                if (error) throw error;
-                // Build the response json
-                const response = {
-                    "authentication": {
-                        "app_secret": generated_app_secret
-                    },
-                    "app_name": requestbody.app_name,
-                    "app_id": app_id,
-                    "app_level": "B2",
-                    "tokens_left": 75000
-                };
-                // Send response
-                res.status(201);
-                res.json(response);
-                // Log
-                api_log.writeLog("POST", "/APPLICATIONS/", 201, response);
-            });
         });
     });
 });
