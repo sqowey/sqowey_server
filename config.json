@@ -30,6 +30,10 @@
                 "password": "",
                 "database": "sqowey_devportal"
             }
+        },
+        "links": {
+            "devportal": "https://devportal.sqowey.de/",
+            "api_documentation": "https://docs.sqowey.de/"
         }
     },
     "api": {

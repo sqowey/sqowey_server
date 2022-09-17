@@ -500,8 +500,14 @@ API.delete("/applications/", (req, res) => {
     });
 });
 // 
+// Help endpoint
 // 
-// 
+API.get("/help/", (req, res) => {
+    res.json({
+        "endpoint": "help",
+        "links": config.general.links
+    });
+});
 
 
 // Run the servers
