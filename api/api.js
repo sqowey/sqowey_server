@@ -503,6 +503,7 @@ API.delete("/applications/", (req, res) => {
 // Help endpoint
 // 
 API.get("/help/", (req, res) => {
+    res.status(200);
     res.json({
         "endpoint": "help",
         "links": config.general.links
