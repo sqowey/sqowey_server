@@ -499,6 +499,7 @@ API.delete("/applications/", (req, res) => {
         });
     });
 });
+
 // 
 // Help endpoint
 // 
@@ -509,6 +510,11 @@ API.get("/help/", (req, res) => {
         "links": config.general.links
     });
 });
+
+// 
+// Statistics endpoint
+// 
+API.get(["/statistics/", "stats"], (req, res) => {});
 
 
 // Run the servers
