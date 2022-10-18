@@ -7,14 +7,16 @@
                     "tokenActions": "Token reducing Mysql-connection running as Thread: ",
                     "generator": "Generator-Mysql-connection running as Thread: ",
                     "authorization": "Authorization Mysql-connection running as Thread: ",
-                    "token_reset": "Token resetting Mysql-connection running as Thread: "
+                    "token_reset": "Token resetting Mysql-connection running as Thread: ",
+                    "statistics_generation": "Statistic generation Mysql-connection running as Thread: "
                 },
                 "error": {
                     "main": "Error on trying to connect the Main-Mysql-connection : ",
                     "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
                     "generator": "Error on trying to connect the Generator-Mysql-connection : ",
                     "authorization": "Error on trying to connect the Authorization-Mysql-connection : ",
-                    "token_reset": "Error on trying to connect the Token-Reset-Mysql-connection : "
+                    "token_reset": "Error on trying to connect the Token-Reset-Mysql-connection : ",
+                    "statistics_generation": "Error on trying to connect to the Statistics-generation-Mysql-connection: "
                 }
             },
             "express": {
