@@ -1,6 +1,19 @@
 const fs = require("fs");
 const currentDate = new Date().getTime();
 // 
+// DB CONN
+// 
+
+var account_db_connection = mysql.createConnection(config.general.mysql_connections.accounts);
+account_db_connection.connect(function(err) {
+    if (err) {
+        console.error(config.general.log_messages.mysql.error.statistics_generation + err.stack);
+        return;
+    }
+    console.log(config.general.log_messages.mysql.connect.statistics_generation + account_db_connection.threadId);
+});
+
+// 
 // Token json printer
 // 
 
