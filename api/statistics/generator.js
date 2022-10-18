@@ -78,3 +78,17 @@ function getLatency(_callback) {
 // getLatency((ms) => {
 //     console.log(ms);
 // });
+
+// 
+// User stats
+//
+
+function getUserNum(_callback) {
+    account_db_connection.query("SELECT COUNT(*) FROM accounts", (error, results, fields) => {
+        _callback(results[0]["COUNT(*)"]);
+    });
+}
+// Testcommands
+// getUserNum((usercount) => {
+//     console.log(usercount);
+// });
