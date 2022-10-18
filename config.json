@@ -1,5 +1,9 @@
 {
     "general": {
+        "versioning": {
+            "app_version": "V0.0.4",
+            "api_version": "V0.0.1"
+        },
         "log_messages": {
             "mysql": {
                 "connect": {
