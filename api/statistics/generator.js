@@ -1,5 +1,6 @@
 const fs = require("fs");
 const currentDate = new Date().getTime();
+const config = require("../../config.json");
 // 
 // DB CONN
 // 
