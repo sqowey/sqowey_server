@@ -92,3 +92,28 @@ function getUserNum(_callback) {
 // getUserNum((usercount) => {
 //     console.log(usercount);
 // });
+
+// 
+// Main functions
+// 
+
+function generateStats() {
+    var stats_response = {
+        "last_update": 0,
+        "api_version": 0,
+        "user_count": 0,
+        "last_version": "",
+        "api_latency": "",
+        "services_down": []
+    }
+    stats_response.last_update = new Date().getTime();
+    stats_response.api_version = config.general.versioning.api_version;
+    stats_response.last_version = config.general.versioning.app_version;
+    getLatency((ms) => {
+        stats_response.api_latency = ms + "ms";
+        getUserNum((usercount) => {
+            stats_response.user_count = usercount;
+            return stats_response;
+        });
+    });
+}
