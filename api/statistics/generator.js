@@ -26,3 +26,19 @@ function lastMonth() {
     }
     return month_arr;
 }
+
+function today() {
+    const year = new Date(currentDate).getFullYear();
+    const month = new Date(currentDate).getMonth() + 1;
+    const date = new Date(currentDate).getDate();
+    const path = __dirname + "/../../logs/old/resetInfo-Hourly-" + year + "-" + month + "-" + date + ".json";
+    if (fs.existsSync(path)) {
+        const day_json = JSON.stringify(JSON.parse(fs.readFileSync(path, "utf8")));
+        const date_string = year + "-" + month + "-" + date
+        day = { "date": date_string, "json": day_json }
+    } else {
+        const date_string = year + "-" + month + "-" + date
+        day = { "date": date_string, "json": "NOTHING HAPPENED ON " + date_string }
+    }
+    return day;
+}
