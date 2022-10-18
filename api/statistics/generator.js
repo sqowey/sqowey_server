@@ -42,3 +42,6 @@ function today() {
     }
     return day;
 }
+// Testcommands
+// console.log(lastMonth());
+// console.log(today());
