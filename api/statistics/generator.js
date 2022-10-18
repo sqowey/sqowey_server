@@ -45,3 +45,14 @@ function today() {
 // Testcommands
 // console.log(lastMonth());
 // console.log(today());
+
+// 
+// Latency measurement
+// 
+
+function getLatency(_callback) {
+    var start = new Date();
+    http.get({ host: config.general["latency-measure-endpoint"], port: 80 }, function(res) {
+        _callback(new Date() - start);
+    });
+}
