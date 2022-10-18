@@ -73,3 +73,8 @@ function getLatency(_callback) {
         _callback(new Date() - start);
     });
 }
+
+// Testcommands
+// getLatency((ms) => {
+//     console.log(ms);
+// });
