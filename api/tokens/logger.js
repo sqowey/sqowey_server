@@ -12,6 +12,7 @@ function initLogFiles() {
 }
 
 function hourFinished(tokens) {
+    hourResets = JSON.parse(fs.readFileSync("./logs/hourResets.json"));
     // Create the timestamp
     const currentDate = new Date;
     const timeISO = currentDate.toISOString();
@@ -24,6 +25,7 @@ function hourFinished(tokens) {
 }
 
 function dayFinished(tokens) {
+    dailyResets = JSON.parse(fs.readFileSync("./logs/dailyResets.json"));
     // Create the timestamp
     const currentDate = new Date;
     const timeISO = currentDate.toISOString();

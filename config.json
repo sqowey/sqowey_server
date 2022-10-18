@@ -1,5 +1,9 @@
 {
     "general": {
+        "versioning": {
+            "app_version": "V0.0.4",
+            "api_version": "V0.0.1"
+        },
         "log_messages": {
             "mysql": {
                 "connect": {
@@ -7,14 +11,16 @@
                     "tokenActions": "Token reducing Mysql-connection running as Thread: ",
                     "generator": "Generator-Mysql-connection running as Thread: ",
                     "authorization": "Authorization Mysql-connection running as Thread: ",
-                    "token_reset": "Token resetting Mysql-connection running as Thread: "
+                    "token_reset": "Token resetting Mysql-connection running as Thread: ",
+                    "statistics_generation": "Statistic generation Mysql-connection running as Thread: "
                 },
                 "error": {
                     "main": "Error on trying to connect the Main-Mysql-connection : ",
                     "tokenActions": "Error on trying to connect the Token-reducing-Mysql-connection : ",
                     "generator": "Error on trying to connect the Generator-Mysql-connection : ",
                     "authorization": "Error on trying to connect the Authorization-Mysql-connection : ",
-                    "token_reset": "Error on trying to connect the Token-Reset-Mysql-connection : "
+                    "token_reset": "Error on trying to connect the Token-Reset-Mysql-connection : ",
+                    "statistics_generation": "Error on trying to connect to the Statistics-generation-Mysql-connection: "
                 }
             },
             "express": {
@@ -29,12 +35,20 @@
                 "user": "root",
                 "password": "",
                 "database": "sqowey_devportal"
+            },
+            "accounts": {
+                "host": "localhost",
+                "user": "root",
+                "password": "",
+                "database": "accounts",
+                "table": "accounts"
             }
         },
         "links": {
             "devportal": "https://devportal.sqowey.de/",
             "api_documentation": "https://docs.sqowey.de/"
-        }
+        },
+        "latency-measure-endpoint": "1.1.1.1"
     },
     "api": {
         "port": 3333,

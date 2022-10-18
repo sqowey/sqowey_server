@@ -7,7 +7,11 @@
         "api": "node ./api/api.js",
         "ndmn_api": "nodemon ./api/api.js",
         "tokens": "node ./api/tokens/reset.js",
-        "ndmn_tokens": "nodemon -i ./logs ./api/tokens/reset.js"
+        "ndmn_tokens": "nodemon -i ./logs ./api/tokens/reset.js",
+        "statistics": "node ./api/statistics/generator.js",
+        "ndmn_statistics": "nodemon -i ./logs ./api/statistics/generator.js",
+        "move": "node ./api/tokens/move_files.js",
+        "ndmn_move": "nodemon -i ./logs ./api/tokens/move_files.js"
     },
     "repository": {
         "type": "git",
