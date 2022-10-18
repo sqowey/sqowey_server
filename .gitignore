@@ -2,3 +2,6 @@
 
 /.dccache
 logs/
+# API STATS
+/api/statistics/stats.json
+/api/statistics/old/
