@@ -1,7 +1,9 @@
+# Nodejs modules
 /node_modules
 
-/.dccache
+# Other logs
 logs/
+
 # API STATS
 /api/statistics/stats.json
 /api/statistics/old/
