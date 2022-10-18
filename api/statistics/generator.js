@@ -97,7 +97,7 @@ function getUserNum(_callback) {
 // Main functions
 // 
 
-function generateStats() {
+function generateStats(_callback) {
     var stats_response = {
         "last_update": 0,
         "api_version": 0,
@@ -113,7 +113,7 @@ function generateStats() {
         stats_response.api_latency = ms + "ms";
         getUserNum((usercount) => {
             stats_response.user_count = usercount;
-            return stats_response;
+            _callback(stats_response);
         });
     });
 }
