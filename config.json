@@ -31,6 +31,13 @@
                 "user": "root",
                 "password": "",
                 "database": "sqowey_devportal"
+            },
+            "accounts": {
+                "host": "localhost",
+                "user": "root",
+                "password": "",
+                "database": "accounts",
+                "table": "accounts"
             }
         },
         "links": {
