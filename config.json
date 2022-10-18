@@ -43,7 +43,8 @@
         "links": {
             "devportal": "https://devportal.sqowey.de/",
             "api_documentation": "https://docs.sqowey.de/"
-        }
+        },
+        "latency-measure-endpoint": "1.1.1.1"
     },
     "api": {
         "port": 3333,
