@@ -117,3 +117,19 @@ function generateStats(_callback) {
         });
     });
 }
+
+setInterval(() => {
+    generateStats((res) => {
+        if (fs.existsSync(__dirname + "/stats.json")) {
+            console.log("Moving old stats-file");
+            const year = new Date(currentDate).getFullYear();
+            const month = new Date(currentDate).getMonth() + 1;
+            const date = new Date(currentDate).getDate();
+            const hour = new Date(currentDate).getHours();
+            const minute = new Date(currentDate).getMinutes();
+            fs.renameSync(__dirname + "/stats.json", __dirname + "/old/stats-" + year + "-" + month + "-" + date + "-" + hour + "-" + minute + ".json");
+        }
+        fs.writeFileSync(__dirname + "/stats.json", JSON.stringify(res, undefined, "    "));
+        console.log(res);
+    });
+}, 10 * 60 * 1000);
